@@ -34,3 +34,6 @@
       auto-save-interval 200
       )
 
+(fset 'yes-or-no-p 'y-or-n-p) ;; stop asking for 'yes' as a confirmation
+
+
