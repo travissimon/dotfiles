@@ -9,5 +9,11 @@
 
 (inhibit-startup-screen t)
 (dired-listing-switches "-alh")
+(global-linum-mode 1)
 (global-visual-line-mode t)
 (initial-buffer-choice "/home/tsimon/Work/nicta")
+
+;; tabs
+(setq-default tab-width 4)
+(setq indent-tabs-mode t)
+
