@@ -143,6 +143,7 @@
 (require 'projectile)
 (require 'helm-projectile)
 (setq projectile-global-mode t)
+(projectile-mode)
 (helm-projectile-on)
 
 
@@ -169,7 +170,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-	("ea489f6710a3da0738e7dbdfc124df06a4e3ae82f191ce66c2af3e0a15e99b90" default))))
+	("cedd3b4295ac0a41ef48376e16b4745c25fa8e7b4f706173083f16d5792bb379" "ce371b56cf0952d838db6dafd92aaa6e3aadd74199c06ed7440da9df5595c4ae" "790e74b900c074ac8f64fa0b610ad05bcfece9be44e8f5340d2d94c1e47538de" "12b4427ae6e0eef8b870b450e59e75122d5080016a9061c9696959e50d578057" "ea489f6710a3da0738e7dbdfc124df06a4e3ae82f191ce66c2af3e0a15e99b90" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
