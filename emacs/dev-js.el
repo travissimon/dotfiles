@@ -1,5 +1,5 @@
 (unless (package-installed-p 'js2-mode)
-  (package-install 'js-2))
+  (package-install 'js2-mode))
 (unless (package-installed-p 'tern)
   (package-install 'tern))
 (unless (package-installed-p 'tern-auto-complete)

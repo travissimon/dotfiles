@@ -5,7 +5,6 @@
 (require 'helm-projectile)
 (setq projectile-global-mode t)
 (projectile-mode)
-(global-projectile-mode)
 (helm-projectile-on)
 
 ;; auto-complete
@@ -19,6 +18,7 @@
 (unless (package-installed-p 'magit)
   (package-install 'magit))
 
+(global-set-key (kbd "C-x g") 'magit-status)
 
 ;; flycheck
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)

@@ -3,8 +3,9 @@
   (package-install 'typescript-mode))
 (unless (package-installed-p 'tss)
   (package-install 'tss))
-(unless (package-installed-p 'flycheck-typescript)
-  (package-install 'flycheck-typescript))
+
+;; (unless (package-installed-p 'flycheck-typescript-tslint)
+;;   (package-install 'flycheck-typescript-tslint))
 
 
 (require 'typescript)
