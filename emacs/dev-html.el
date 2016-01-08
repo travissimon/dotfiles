@@ -2,6 +2,14 @@
 (unless (package-installed-p 'ac-html)
   (package-install 'ac-html))
 
+(unless (package-installed-p 'css-mode)
+  (package-install 'css-mode))
+
+(unless (package-installed-p 'less-css-mode)
+  (package-install 'less-css-mode))
+
+
+
 ;; bootstrap ac
 (unless (package-installed-p 'ac-html-bootstrap)
   (package-install 'ac-html-bootstrap))

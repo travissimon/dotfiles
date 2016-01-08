@@ -20,3 +20,4 @@
 (load "/home/tsimon/dev-js.el")
 (load "/home/tsimon/dev-typescript.el")
 (load "/home/tsimon/dev-clojure.el")
+(load "/home/tsimon/dev-go.el")
