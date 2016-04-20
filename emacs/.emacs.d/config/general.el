@@ -4,7 +4,8 @@
 ;; general visual elements
 (setq inhibit-startup-screen t)
 (setq dired-listing-switches "-alh")
-(setq global-linum-mode 1)
+(setq linum-mode t)
+(setq global-linum-mode t)
 (setq global-visual-line-mode t)
 (setq initial-buffer-choice "/home/tsimon/Work/nicta")
 (setq visible-bell t)

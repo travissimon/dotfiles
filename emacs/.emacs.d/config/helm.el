@@ -25,6 +25,7 @@
 ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
 (helm-mode 1)
 
+(global-unset-key (kbd "C-c h"))
 (global-set-key (kbd "C-c h") 'helm-command-prefix)
 (global-unset-key (kbd "C-x c"))
 
@@ -47,5 +48,5 @@
       helm-ff-file-name-history-use-recentf t)
 
 ;; key bindings
-(global-set-key (kbd "C-x f") 'helm-for-files)
+(global-set-key (kbd "C-x f") 'helm-find-files)
 (global-set-key (kbd "C-M-l") 'dired-jump)

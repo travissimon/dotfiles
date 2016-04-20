@@ -3,9 +3,10 @@
 ;; projectile
 (require 'projectile)
 (require 'helm-projectile)
-(setq projectile-global-mode t)
-(projectile-mode)
+(projectile-global-mode)
 (helm-projectile-on)
+
+
 
 ;; auto-complete
 (unless (package-installed-p 'auto-complete)
@@ -13,6 +14,7 @@
 (unless (package-installed-p 'ac-helm)
   (package-install 'ac-helm))
 
+(require 'auto-complete-config)
 
 ;; magit
 (unless (package-installed-p 'magit)
