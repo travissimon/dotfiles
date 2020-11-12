@@ -7,7 +7,7 @@
 (setq linum-mode t)
 (setq global-linum-mode t)
 (setq global-visual-line-mode t)
-(setq initial-buffer-choice "/home/tsimon/Work/nicta")
+(setq initial-buffer-choice "/home/tsimon/")
 (setq visible-bell t)
 
 ;; use y-or-n settings
@@ -42,9 +42,9 @@
 (remove-dos-eol)
 
 ;; undo tree
+(unless (package-installed-p 'undo-tree)
+   (package-install 'undo-tree))
 (require 'undo-tree)
-;; (unless (package-installed-p 'undo-tree)
-;;   (package-install 'undo-tree))
 
 (global-undo-tree-mode)
 
