@@ -1,9 +1,7 @@
 
 ;; ensure themes exist
-(unless (package-installed-p 'color-theme)
-  (package-install 'color-theme))
-(unless (package-installed-p 'bliss-theme)
-  (package-install 'bliss-theme))
+(use-package bliss-theme
+  :ensure t)
 
 ;; different themes for X and terminal
 (if (display-graphic-p)

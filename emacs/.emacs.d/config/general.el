@@ -42,9 +42,8 @@
 (remove-dos-eol)
 
 ;; undo tree
-(unless (package-installed-p 'undo-tree)
-   (package-install 'undo-tree))
-(require 'undo-tree)
+(use-package undo-tree
+  :ensure t)
 
 (global-undo-tree-mode)
 

@@ -1,30 +1,28 @@
 ;; Helm
 
-(unless (package-installed-p 'helm)
-  (package-install 'helm))
-(unless (package-installed-p 'helm-core)
-  (package-install 'helm-core))
-(unless (package-installed-p 'helm-css-scss)
-  (package-install 'helm-css-scss))
-(unless (package-installed-p 'helm-flymake)
-  (package-install 'helm-flymake))
-(unless (package-installed-p 'helm-projectile)
-  (package-install 'helm-projectile))
-(unless (package-installed-p 'helm-themes)
-  (package-install 'helm-themes))
+(use-package helm
+  :ensure t)
+(use-package helm-flx
+  :ensure t)
+(use-package helm-fuzzier
+  :ensure t)
+(use-package helm-flymake
+  :ensure t)
+(use-package helm-projectile
+  :ensure t)
+(use-package helm-command
+  :ensure t)
+(use-package helm-gitlab
+  :ensure t)
 
-(require 'helm-config)
-(require 'helm-command)
-(require 'helm-elisp)
-(require 'helm-misc)
-(require 'helm-css-scss)
+
+(helm-mode 1)
+(helm-fuzzier-mode 1)
 
 
 ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
 ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
 ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
-(helm-mode 1)
-
 (global-unset-key (kbd "C-c h"))
 (global-set-key (kbd "C-c h") 'helm-command-prefix)
 (global-unset-key (kbd "C-x c"))

@@ -4,13 +4,23 @@
 
 ;; Define package repositories
 (require 'package)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 
 ;; Load and activate emacs packages. Do this first so that the
 ;; packages are loaded before you start trying to modify them.
 ;; This also sets the load path.
 (package-initialize)
+
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+
+
+(when (not (package-installed-p 'use-package))
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+
+;; Initialise use-package
+(require 'use-package)
 
 (load "/home/tsimon/.emacs.d/config/general.el")
 (load "/home/tsimon/.emacs.d/config/themes.el")
