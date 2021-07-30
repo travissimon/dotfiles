@@ -49,3 +49,9 @@
   '(add-hook 'css-mode-hook
 			 (lambda ()
 			   (add-hook 'before-save-hook 'web-beautify-css-buffer t t))))
+
+;; Oh yeah, and TABS for html
+(add-hook 'html-mode-hook
+		  (lambda()
+            (setq sgml-basic-offset 4)
+            (setq indent-tabs-mode t)))

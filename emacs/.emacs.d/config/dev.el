@@ -16,8 +16,8 @@
 (use-package ac-helm
   :ensure t)
 
-(use-package auto-complete-config
-  :ensure t)
+;; (use-package auto-complete-config
+;;   :ensure t)
 
 ;; magit
 (use-package magit

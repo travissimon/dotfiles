@@ -1,22 +1,67 @@
 ;; Typescript
-(unless (package-installed-p 'typescript-mode)
-  (package-install 'typescript-mode))
-(unless (package-installed-p 'tss)
-  (package-install 'tss))
+;;(unless (package-installed-p 'typescript-mode)
+;;  (package-install 'typescript-mode))
+;; (unless (package-installed-p 'tss)
+;;  (package-install 'tss))
 
 ;; (unless (package-installed-p 'flycheck-typescript-tslint)
 ;;   (package-install 'flycheck-typescript-tslint))
 
+;; (require 'typescript)
+;;(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 
-(require 'typescript)
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 
-(require 'tss)
+;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+(setq lsp-keymap-prefix "C-c l")
+
+(use-package lsp-mode
+    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+            (typescript-mode . lsp))
+    :commands lsp)
+
+;;(use-package company
+;;  :after lsp-mode
+;;  :hook (lsp-mode . company-mode)
+;;  :bind (:map company-active-map
+;;			  ("<tab>" . company-complete-selection))
+;;  (:map lsp-mode-map
+;;		("<tab>" . company-indent-or-complete-common))
+;;  :custom
+;;  (company-minimum-prefix-length 1)
+;;  (company-idle-delay 0.0))
+
+;;(require 'company-lsp)
+;;(push 'company-lsp company-backend)
+
+;; optionally
+;;(use-package lsp-ui :commands lsp-ui-mode)
+;; if you are helm user
+;;(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+;; if you are ivy user
+
+;; optionally if you want to use debugger
+;; (use-package dap-mode)
+;; (use-package dap-typescript)
+
+
+
+
+
+;; (use-package lsp-mode
+;;  :commands (lsp lsp-deferred)
+;;  :init (setq lsp-keymap-prefix "C-c l"))
+
+(use-package typescript-mode
+  :mode "\\.ts\\'"
+  :hook (typescript-mode . lsp-deferred)
+  :config (setq typescript-indent-level 4))
+
+;;(require 'tss)
 ;; Key bindings
-(tss-config-default)
-(setq tss-popup-help-key "C-:")
-(setq tss-jump-to-definition-key "C->")
-(setq tss-implement-definition-key "C-c i")
+;;(tss-config-default)
+;;(setq tss-popup-help-key "C-:")
+;;(setq tss-jump-to-definition-key "C->")
+;;(setq tss-implement-definition-key "C-c i")
 
 
 

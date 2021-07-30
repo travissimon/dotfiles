@@ -29,8 +29,8 @@
 (load "/home/tsimon/.emacs.d/config/dev-html.el")
 (load "/home/tsimon/.emacs.d/config/dev-js.el")
 (load "/home/tsimon/.emacs.d/config/dev-typescript.el")
-(load "/home/tsimon/.emacs.d/config/dev-clojure.el")
-(load "/home/tsimon/.emacs.d/config/dev-go.el")
+;; (load "/home/tsimon/.emacs.d/config/dev-clojure.el")
+;; (load "/home/tsimon/.emacs.d/config/dev-go.el")
 
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell (replace-regexp-in-string

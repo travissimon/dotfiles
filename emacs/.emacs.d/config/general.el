@@ -17,21 +17,10 @@
 (setq-default tab-width 4)
 (setq indent-tabs-mode t)
 
-;; Backup file settings
-(defvar --backup-directory (concat user-emacs-directory "backups"))
-(if (not (file-exists-p --backup-directory))
-	(make-directory --backup-directory t))
-(setq backup-directory-alist `(("." . ,--backup-directory)))
-(setq make-backup-files t
-	  backup-by-copying t
-	  version-control t
-	  delete-old-versions t
-	  delete-by-moving-to-trash t
-	  kept-old-versions 6
-	  kept-new-versions 9
-	  auto-save-default t
-	  auto-save-timeout 20
-	  auto-save-interval 200)
+;; Disable backup and auto-save files
+(setq auto-save-default nil)
+(setq make-backup-files nil)
+(setq create-lockfiles nil)
 
 (defun remove-dos-eol ()
   "Do not show ^M in files containing mixed unix & dos line endings."
@@ -46,5 +35,3 @@
   :ensure t)
 
 (global-undo-tree-mode)
-
-

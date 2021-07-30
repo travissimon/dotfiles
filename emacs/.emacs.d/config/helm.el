@@ -48,3 +48,6 @@
 ;; key bindings
 (global-set-key (kbd "C-x f") 'helm-find-files)
 (global-set-key (kbd "C-M-l") 'dired-jump)
+
+(global-unset-key (kbd "M-x"))
+(global-set-key (kbd "M-x") 'helm-M-x)
