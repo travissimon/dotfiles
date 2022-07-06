@@ -1,4 +1,6 @@
 
+/emacs/.emacs/backup/
+
 emacs/.emacs.d/auto-save-list
 emacs/.emacs.d/backup/**
 emacs/.emacs.d/elpa/**
