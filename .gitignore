@@ -1,6 +1,6 @@
 
 emacs/.emacs.d/auto-save-list
-**/backup/**
+emacs/.emacs.d/backup/**
 emacs/.emacs.d/elpa/**
 emacs/.emacs.d/.cache
 emacs/.emacs.d/eshell/**
