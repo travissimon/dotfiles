@@ -1,7 +1,7 @@
 (unless (package-installed-p 'js2-mode)
   (package-install 'js2-mode))
-(unless (package-installed-p 'tern)
-  (package-install 'tern))
+;; (unless (package-installed-p 'tern)
+;;  (package-install 'tern))
 (unless (package-installed-p 'tern-auto-complete)
   (package-install 'tern-auto-complete))
 
@@ -18,8 +18,8 @@
 ;; tern
 (add-hook 'js-mode-hook (lambda () (tern-mode t)))
 
-(eval-after-load 'tern
-   '(progn
-      (require 'tern-auto-complete)
-      (tern-ac-setup)))
-(setq tern-ac-on-dot t)
+;; (eval-after-load 'tern
+;;   '(progn
+;;      (require 'tern-auto-complete)
+;;      (tern-ac-setup)))
+;;(setq tern-ac-on-dot t)

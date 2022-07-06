@@ -1,0 +1,20 @@
+(undo-tree-save-format-version . 1)
+"23433272b1ce57550804c8d5e7df2d809f45979b"
+[nil nil nil nil (25285 31834 633319 700000) 0 nil]
+([nil current ((786 . 1374) (#("(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(mode-line ((t (:background \"#3c5473\" :foreground \"lightgray\" :box (:line-width -1 :style released-button)))))
+ '(mode-line-buffer-id ((t (:background \"#3C5473\" :foreground \"gainsboro\" :slant normal :weight normal :width normal :family \"Operator Mono SSm\"))))
+ '(mode-line-inactive ((t (:background \"#344B63\" :foreground \"#9ca19e\" :weight light)))))" 0 588 (fontified nil)) . -786) (783 . 785) (331 . 332) (#(" " 0 1 (fontified nil)) . 331) (#("
+" 0 1 (fontified nil)) . -783) (331 . 332) (782 . 783) (330 . 331) (#(" " 0 1 (fontified nil)) . 330) (320 . 782) (#(" " 0 1 (fontified nil)) . 320) (47 . 321) (#("(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+	(no-littering pug-mode helm-command web-beautify use-package undo-tree typescript-mode tss tern-auto-complete rainbow-delimiters paren-completer magit js2-mode helm-projectile helm-lsp helm-gitlab helm-fuzzier helm-flymake helm-flx gotest golint go-projectile go-autocomplete flymake-go exec-path-from-shell color-theme-modern color-theme clojure-mode-extra-font-locking cljr-helm bliss-theme ac-html-bootstrap ac-html ac-helm ac-cider))))" 0 724 (fontified nil)) . -47) (t 25285 31832 802483 300000)) nil (25285 31834 633313 700000) 0 nil])
+nil

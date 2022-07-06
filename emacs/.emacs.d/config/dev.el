@@ -24,6 +24,11 @@
   :ensure t
   :bind ("C-x g" . magit-status))
 
+;; editor config
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
 
 ;; flycheck
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)

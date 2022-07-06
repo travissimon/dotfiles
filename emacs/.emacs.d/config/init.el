@@ -23,12 +23,13 @@
 (require 'use-package)
 
 (load "/home/tsimon/.emacs.d/config/general.el")
-(load "/home/tsimon/.emacs.d/config/themes.el")
+(load "/home/tsimon/.emacs.d/config/tsimon.el")
 (load "/home/tsimon/.emacs.d/config/helm.el")
 (load "/home/tsimon/.emacs.d/config/dev.el")
 (load "/home/tsimon/.emacs.d/config/dev-html.el")
 (load "/home/tsimon/.emacs.d/config/dev-js.el")
 (load "/home/tsimon/.emacs.d/config/dev-typescript.el")
+(load "/home/tsimon/.emacs.d/config/dev-pug.el")
 ;; (load "/home/tsimon/.emacs.d/config/dev-clojure.el")
 ;; (load "/home/tsimon/.emacs.d/config/dev-go.el")
 
@@ -42,3 +43,5 @@
     (setq exec-path (split-string path-from-shell path-separator))))
 
 (when window-system (set-exec-path-from-shell-PATH))
+
+
