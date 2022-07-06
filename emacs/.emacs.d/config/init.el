@@ -23,7 +23,7 @@
 (require 'use-package)
 
 (load "/home/tsimon/.emacs.d/config/general.el")
-(load "/home/tsimon/.emacs.d/config/tsimon.el")
+(load "/home/tsimon/.emacs.d/config/tsimon-theme.el")
 (load "/home/tsimon/.emacs.d/config/helm.el")
 (load "/home/tsimon/.emacs.d/config/dev.el")
 (load "/home/tsimon/.emacs.d/config/dev-html.el")
