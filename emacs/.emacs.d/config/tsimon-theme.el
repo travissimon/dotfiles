@@ -40,7 +40,7 @@
 
 
 (deftheme tsimon
-  "tsimon theme")
+  "Custom emacs theme for travis")
 
 (custom-theme-set-faces
  'tsimon
@@ -626,9 +626,7 @@
  '(zmacs-region ((t (:background "Cyan4")))))
 
 ;;;###autoload
-(when load-file-name
-  (add-to-list 'custom-theme-load-path
-               (file-name-as-directory (file-name-directory load-file-name))))
+(add-to-list 'custom-theme-load-path "~/.emacs.d/config")
 
 (provide-theme 'tsimon)
 

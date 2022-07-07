@@ -7,13 +7,12 @@
 (setq linum-mode t)
 (setq global-linum-mode t)
 (setq global-visual-line-mode t)
-(setq initial-buffer-choice "/home/tsimon/")
+(setq initial-buffer-choice "/home/tsimon/Work/whiteriver/src/brand-magic")
 (setq visible-bell t)
 
-(if (display-graphic-p)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1) 
-  (toggle-scroll-bar -1))
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(toggle-scroll-bar -1)
 
 
 ;; use y-or-n settings

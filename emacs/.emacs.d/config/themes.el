@@ -5,9 +5,9 @@
 
 ;; different themes for X and terminal
 (if (display-graphic-p)
-  (load-theme 'tsimon)
+  (load-theme 'tsimon t)
   ;; -nw
-  (load-theme 'bliss))
+  (load-theme 'bliss t))
 
 
 ;; Set default font

@@ -24,14 +24,9 @@
 
 (load "/home/tsimon/.emacs.d/config/general.el")
 (load "/home/tsimon/.emacs.d/config/tsimon-theme.el")
+(load "/home/tsimon/.emacs.d/config/themes.el")
 (load "/home/tsimon/.emacs.d/config/helm.el")
 (load "/home/tsimon/.emacs.d/config/dev.el")
-(load "/home/tsimon/.emacs.d/config/dev-html.el")
-(load "/home/tsimon/.emacs.d/config/dev-js.el")
-(load "/home/tsimon/.emacs.d/config/dev-typescript.el")
-(load "/home/tsimon/.emacs.d/config/dev-pug.el")
-;; (load "/home/tsimon/.emacs.d/config/dev-clojure.el")
-;; (load "/home/tsimon/.emacs.d/config/dev-go.el")
 
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell (replace-regexp-in-string
