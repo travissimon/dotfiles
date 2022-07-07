@@ -1,9 +1,0 @@
-(undo-tree-save-format-version . 1)
-"0aeb6fc312d4142cd1b90fbd17fd0d1c6fd94b20"
-[nil nil nil nil (25285 32086 297003 700000) 0 nil]
-([nil nil ((1 . 2) (t 25285 32076 102483 300000)) nil (25285 32086 297002 600000) 0 nil])
-([nil nil ((1 . 21) (t 25285 32076 102483 300000)) nil (25285 32086 297001 400000) 0 nil])
-([nil nil ((#(" " 0 1 (fontified t face git-commit-summary)) . -11) (undo-tree-id0 . -1) (#("d" 0 1 (fontified t face git-commit-summary)) . -12) (undo-tree-id1 . -1) (#("i" 0 1 (fontified t face git-commit-summary)) . -13) (undo-tree-id2 . -1) (#("r" 0 1 (fontified t face git-commit-summary)) . -14) (undo-tree-id3 . -1) (#("e" 0 1 (fontified t face git-commit-summary)) . -15) (undo-tree-id4 . -1) (#("c" 0 1 (fontified t face git-commit-summary)) . -16) (undo-tree-id5 . -1) (#("t" 0 1 (fontified t face git-commit-summary)) . -17) (undo-tree-id6 . -1) (#("o" 0 1 (fontified t face git-commit-summary)) . -18) (undo-tree-id7 . -1) (#("r" 0 1 (fontified t face git-commit-summary)) . -19) (undo-tree-id8 . -1) (#("y" 0 1 (fontified t face git-commit-summary)) . -20) (undo-tree-id9 . -1) 21) nil (25285 32086 296997 700000) 0 nil])
-([nil nil ((11 . 32)) nil (25285 32086 296978 400000) 0 nil])
-([nil current ((32 . 33)) nil (25285 32086 296974 200000) 0 nil])
-nil
