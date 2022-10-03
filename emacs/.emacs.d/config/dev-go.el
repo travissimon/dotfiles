@@ -12,8 +12,6 @@
   (package-install 'gotest))
 (unless (package-installed-p 'golint)
   (package-install 'golint))
-(unless (package-installed-p 'flymake-go)
-  (package-install 'flymake-go))
 
 (require 'go-autocomplete)
 (require 'auto-complete-config)

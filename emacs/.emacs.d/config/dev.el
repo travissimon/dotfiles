@@ -5,8 +5,18 @@
   :ensure t)
 (use-package helm-projectile
   :ensure t)
+
 (projectile-global-mode)
+(setq projectile-completion-system 'helm)
 (helm-projectile-on)
+(setq projectile-enable-caching t)
+
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(global-set-key (kbd "C-c C-d") 'helm-browse-project)
+(global-set-key (kbd "C-c p h") 'helm-projectile)
+(global-set-key (kbd "C-x b") 'helm-mini)
+
+
 
 ;; magit
 (use-package magit
@@ -77,4 +87,4 @@
 (load "/home/tsimon/.emacs.d/config/dev-typescript.el")
 (load "/home/tsimon/.emacs.d/config/dev-pug.el")
 ;; (load "/home/tsimon/.emacs.d/config/dev-clojure.el")
-;; (load "/home/tsimon/.emacs.d/config/dev-go.el")
+(load "/home/tsimon/.emacs.d/config/dev-go.el")

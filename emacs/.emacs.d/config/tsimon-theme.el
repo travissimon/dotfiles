@@ -31,12 +31,9 @@
 
 (set-face-attribute 'default nil
                     :family "Operator Mono SSm"
-                    :height 98
+                    :height 100
                     :weight 'normal
                     :width 'normal)
-'(mode-line ((t (:background "#3c5473" :foreground "lightgray" :box (:line-width -1 :style released-button)))))
-'(mode-line-buffer-id ((t (:background "#3C5473" :foreground "gainsboro" :slant normal :weight normal :width normal :family "Operator Mono SSm"))))
-'(mode-line-inactive ((t (:background "#344B63" :foreground "#9ca19e" :weight light))))
 
 
 (deftheme tsimon
@@ -443,13 +440,18 @@
  '(message-url ((t (:bold t :foreground "pink" :weight bold))))
  '(mmm-default-submode-face ((t (:background "#c0c0c5"))))
  '(mmm-face ((t (:background "black" :foreground "green"))))
- '(mode-line ((t (:background "#3c5473" :foreground "lightgray" :box (:line-width -1 :style released-button :family "helv")))))
- '(mode-line-buffer-id ((t (:background "white" :foreground "DeepSkyBlue3" :slant normal :weight normal :width normal :family "outline-verdana"))))
+ '(mode-line ((t (:background "#3c5473" :foreground "lightgray" :box (:line-width -1 :style released-button)))))
+ '(mode-line-buffer-id ((t (:background "#3C5473" :foreground "gainsboro" :slant normal :weight normal :width normal :family "Operator Mono SSm"))))
+ '(mode-line-inactive ((t (:background "#344B63" :foreground "#9ca19e" :weight light))))
  '(mode-line-mousable ((t (:background "white" :foreground "DeepSkyBlue3"))))
  '(mode-line-mousable-minor-mode ((t (:background "white" :foreground "DeepSkyBlue3"))))
  '(my-summary-highlight-face ((t (:background "PaleTurquoise4" :foreground "White"))))
  '(my-url-face ((t (:foreground "LightBlue"))))
  '(nil ((t (nil))))
+ '(outline-1 ((t (:inherit font-lock-function-name-face :height 1.3))))
+ '(outline-2 ((t (:inherit font-lock-variable-name-face :height 1.2))))
+ '(outline-3 ((t (:inherit font-lock-keyword-face :height 1.15))))
+ '(outline-4 ((t (:inherit font-lock-comment-face :height 1.1))))
  '(paren-blink-off ((t (:foreground "gray80"))))
  '(paren-face-match ((t (:background "turquoise"))))
  '(paren-face-mismatch ((t (:background "purple" :foreground "white"))))

@@ -9,7 +9,7 @@
 	:init (setq lsp-keymap-prefix "C-c l"))
 
 ;; optionally
-(use-package lsp-ui :commands lsp-ui-mode)
+;; (use-package lsp-ui :commands lsp-ui-mode)
 ;; if you are helm user
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
@@ -21,7 +21,8 @@
 (use-package typescript-mode
   :mode "\\.ts\\'"
   :hook (typescript-mode . lsp-deferred)
-  :config (setq typescript-indent-level 4))
+  :config (setq typescript-indent-level 4)
+  :ensure t)
 
 ;; sample config
 ;; (add-hook 'typescript-mode-hook

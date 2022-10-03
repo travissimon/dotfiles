@@ -6,8 +6,6 @@
   :ensure t)
 (use-package helm-fuzzier
   :ensure t)
-(use-package helm-flymake
-  :ensure t)
 (use-package helm-ls-git
   :ensure t)
 (use-package helm-lsp
@@ -56,6 +54,3 @@
 
 (global-unset-key (kbd "M-y"))
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-
-
-(global-set-key (kbd "C-x C-d") 'helm-browse-project)

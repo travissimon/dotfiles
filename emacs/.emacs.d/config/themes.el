@@ -13,6 +13,6 @@
 ;; Set default font
 (set-face-attribute 'default nil
                     :family "Operator Mono SSm"
-                    :height 98
+                    :height 100
                     :weight 'normal
                     :width 'normal)
