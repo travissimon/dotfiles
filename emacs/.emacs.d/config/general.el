@@ -7,7 +7,7 @@
 (setq linum-mode t)
 (setq global-linum-mode t)
 (setq global-visual-line-mode t)
-(setq initial-buffer-choice "/home/tsimon/Work/whiteriver/src/brand-magic")
+(setq initial-buffer-choice "/home/tsimon/Work/regsoft/src")
 (setq visible-bell t)
 
 (tool-bar-mode -1)

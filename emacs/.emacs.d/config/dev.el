@@ -26,8 +26,7 @@
 ;; editor config
 (use-package editorconfig
   :ensure t
-  :config
-  (editorconfig-mode 1))
+  :config (editorconfig-mode 1))
 
 ;; flycheck
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -57,19 +56,14 @@
   ;; This is recommended since Dabbrev can be used globally (M-/).
   ;; See also `corfu-excluded-modes'.
   :ensure t
-  :init
-  (global-corfu-mode))
+  :init (global-corfu-mode))
 
-
-;; Autom completion mode - maybe disable?
-(setq corfu-auto t
-      corfu-quit-no-match 'separator)
 
 ;; A few more useful configurations...
-(use-package emacs
-  :init
+;;(use-package emacs
+  ;; :init
   ;; TAB cycle if there are only few candidates
-  (setq completion-cycle-threshold 3)
+  ;; (setq completion-cycle-threshold 3)
 
   ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
   ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
@@ -78,7 +72,7 @@
 
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
-  (setq tab-always-indent 'complete))
+  ;;(setq tab-always-indent 'complete))
 
 
 ;; specific languages

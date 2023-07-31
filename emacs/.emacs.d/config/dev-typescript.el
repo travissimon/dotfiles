@@ -1,15 +1,22 @@
-
-;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 (setq lsp-keymap-prefix "C-c l")
 
+;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+;; See https://github.com/minad/corfu/wiki for more corfu configuration with lsp mode
 (use-package lsp-mode
-    :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-            (typescript-mode . lsp))
-    :commands lsp
-	:init (setq lsp-keymap-prefix "C-c l"))
+	:init
+	((defun my/lsp-mode-setup-completion ()
+	    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+			'(flex))) ;; Configure flex
+		(setq lsp-keymap-prefix "C-c l"))
+	:custom
+	(lsp-completion-provider :none) ;; we use Corfu!
+	:hook (
+		   (lsp-completion-mode . my/lsp-mode-setup-completion)
+		   (typescript-mode . lsp))
+	:commands lsp)
 
 ;; optionally
-;; (use-package lsp-ui :commands lsp-ui-mode)
+;;(use-package lsp-ui :commands lsp-ui-mode)
 ;; if you are helm user
 (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 
@@ -24,27 +31,13 @@
   :config (setq typescript-indent-level 4)
   :ensure t)
 
-;; sample config
-;; (add-hook 'typescript-mode-hook
-;; 		  (lambda ()
-;; 			(tide-setup)
-;; 			(flycheck-mode +1)
-;; 			(setq flycheck-check-syntax-automatically '(save mode-enabled))
-;; 			(eldoc-mode +1)
-;; 			;; company is an optional dependency. You have to
-;; 			;; install it separately via package-install
-;; 			(company-mode-on)))
-
-;; ;; aligns annotation to the right hand side
-;; (setq company-tooltip-align-annotations t)
-
-
 ;; angular language server
 (setq lsp-clients-angular-language-server-command
-  '("node"
-    "/usr/lib/node_modules/@angular/language-server"
-    "--ngProbeLocations"
-    "/usr/lib/node_modules"
-    "--tsProbeLocations"
-    "/usr/lib/node_modules"
-    "--stdio"))
+	'("node"
+	:init (setq lsp-keymap-prefix "C-c l")	"/home/tsimon/.nvm/versions/node/v19.9.0/lib/node_modules/@angular/language-server"
+		"--ngProbeLocations"
+		"/home/tsimon/.nvm/versions/node/v19.9.0/lib/node_modules/"
+		"--tsProbeLocations"
+		"/home/tsimon/.nvm/versions/node/v19.9.0/lib/node_modules/"
+		"--stdio"))
+
