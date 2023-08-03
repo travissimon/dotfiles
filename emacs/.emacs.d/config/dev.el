@@ -33,7 +33,7 @@
 
 ;; Corgu for syntax completion
 ;; see https://github.com/minad/corfu
-(use-package corfu
+;;(use-package corfu
   ;; Optional customizations
   ;; :custom
   ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
@@ -55,8 +55,8 @@
   ;; Recommended: Enable Corfu globally.
   ;; This is recommended since Dabbrev can be used globally (M-/).
   ;; See also `corfu-excluded-modes'.
-  :ensure t
-  :init (global-corfu-mode))
+;;  :ensure t
+;;  :init (global-corfu-mode))
 
 
 ;; A few more useful configurations...
@@ -81,4 +81,4 @@
 (load "/home/tsimon/.emacs.d/config/dev-typescript.el")
 (load "/home/tsimon/.emacs.d/config/dev-pug.el")
 ;; (load "/home/tsimon/.emacs.d/config/dev-clojure.el")
-(load "/home/tsimon/.emacs.d/config/dev-go.el")
+;; (load "/home/tsimon/.emacs.d/config/dev-go.el")

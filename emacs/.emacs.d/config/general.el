@@ -8,11 +8,13 @@
 (setq global-linum-mode t)
 (setq global-visual-line-mode t)
 (setq initial-buffer-choice "/home/tsimon/Work/regsoft/src")
-(setq visible-bell t)
+(setq visible-bell nil
+	  ring-bell-function #'ignore)
+(setq recenter-display nil)
 
 (tool-bar-mode -1)
 (menu-bar-mode -1)
-(toggle-scroll-bar -1)
+;; (toggle-scroll-bar -1)
 
 
 ;; use y-or-n settings
@@ -64,5 +66,5 @@
   (setq buffer-backed-up nil))
 (add-hook 'before-save-hook #'force-backup-of-buffer)
 
-(use-package backup-walker
-  :ensure t)
+;;(use-package backup-walker
+;;  :ensure t)

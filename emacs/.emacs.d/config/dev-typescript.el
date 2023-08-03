@@ -3,15 +3,7 @@
 ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
 ;; See https://github.com/minad/corfu/wiki for more corfu configuration with lsp mode
 (use-package lsp-mode
-	:init
-	((defun my/lsp-mode-setup-completion ()
-	    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-			'(flex))) ;; Configure flex
-		(setq lsp-keymap-prefix "C-c l"))
-	:custom
-	(lsp-completion-provider :none) ;; we use Corfu!
 	:hook (
-		   (lsp-completion-mode . my/lsp-mode-setup-completion)
 		   (typescript-mode . lsp))
 	:commands lsp)
 
@@ -36,8 +28,8 @@
 	'("node"
 	:init (setq lsp-keymap-prefix "C-c l")	"/home/tsimon/.nvm/versions/node/v19.9.0/lib/node_modules/@angular/language-server"
 		"--ngProbeLocations"
-		"/home/tsimon/.nvm/versions/node/v19.9.0/lib/node_modules/"
+		"/home/tsimon/.nvm/versions/node/v20.5.0/lib/node_modules/"
 		"--tsProbeLocations"
-		"/home/tsimon/.nvm/versions/node/v19.9.0/lib/node_modules/"
+		"/home/tsimon/.nvm/versions/node/v20.5.0/lib/node_modules/"
 		"--stdio"))
 
