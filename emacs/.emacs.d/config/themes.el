@@ -1,13 +1,9 @@
 
-;; ensure themes exist
-(use-package bliss-theme
-  :ensure t)
-
 ;; different themes for X and terminal
 (if (display-graphic-p)
   (load-theme 'tsimon t)
   ;; -nw
-  (load-theme 'bliss t))
+  (load-theme 'tsimon-shell t))
 
 
 ;; Set default font

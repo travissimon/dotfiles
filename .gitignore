@@ -1,13 +1,14 @@
-
-
 emacs/.emacs.d/auto-save-list
 emacs/.emacs.d/backup/
-**/backup/
 emacs/.emacs.d/elpa/**
+emacs/.emacs.d/projectile.cache
+emacs/.emacs.d/tramp
 emacs/.emacs.d/.cache
 emacs/.emacs.d/eshell/**
 emacs/.emacs.d/transient
 emacs/.emacs.d/url
+emacs/.emacs.d/recentf
+emacs/.emacs.d/.lsp-session-v1
 emacs/.emacs.d/.lsp-session-v1/**
 emacs/.emacs.d/ac-comphist.dat/**
 emacs/.emacs.d/eln-cache/
