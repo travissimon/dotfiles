@@ -190,5 +190,5 @@ bar {
 }
 
 gaps inner 20px
-gaps outer 20px
+gaps outer 10px
 smart_gaps on
