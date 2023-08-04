@@ -23,13 +23,13 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background and no title bar buttons
-  #decorations: full
+  decorations: none
 
   # Background opacity
   #
   # Window opacity as a floating point number from `0.0` to `1.0`.
   # The value `0.0` is completely transparent and `1.0` is opaque.
-  opacity: 0.0
+  opacity: 0.9
 
   # Startup Mode (changes require restart)
   #
@@ -119,8 +119,6 @@ font:
     # The `style` can be specified to pick a specific face.
     #style: Bold Italic
 
-  # Point size
-  #size: 12.0
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
@@ -137,21 +135,17 @@ font:
   #  y: 0
 
   # Use built-in font for box drawing characters.
-  #
-  # If `true`, Alacritty will use a custom built-in font for box drawing
-  # characters (Unicode points 2500 - 259f).
-  #
   #builtin_box_drawing: true
 
 # If `true`, bold text is drawn using the bright color variants.
 #draw_bold_text_with_bright_colors: false
 
 # Colors (Tomorrow Night)
-#colors:
+colors:
   # Default colors
-  #primary:
-  #  background: '#1d1f21'
-  #  foreground: '#c5c8c6'
+  primary:
+    background: '#181E39'
+    foreground: '#F5ECD2'
 
     # Bright and dim foreground colors
     #
@@ -243,26 +237,26 @@ font:
   #  background: CellForeground
 
   # Normal colors
-  #normal:
-  #  black:   '#1d1f21'
-  #  red:     '#cc6666'
-  #  green:   '#b5bd68'
-  #  yellow:  '#f0c674'
-  #  blue:    '#81a2be'
-  #  magenta: '#b294bb'
-  #  cyan:    '#8abeb7'
-  #  white:   '#c5c8c6'
+  normal:
+    black:   '#1d1f21'
+    red:     '#DAB8B8'
+    green:   '#749178'
+    yellow:  '#EAD9A4'
+    blue:    '#8691C4'
+    magenta: '#C39DB2'
+    cyan:    '#8AB6B8'
+    white:   '#dddddd'
 
   # Bright colors
-  #bright:
-  #  black:   '#666666'
-  #  red:     '#d54e53'
-  #  green:   '#b9ca4a'
-  #  yellow:  '#e7c547'
-  #  blue:    '#7aa6da'
-  #  magenta: '#c397d8'
-  #  cyan:    '#70c0b1'
-  #  white:   '#eaeaea'
+  bright:
+    black:   '#666666'
+    red:     '#EAD6D6'
+    green:   '#C2CFC4'
+    yellow:  '#F5ECD2'
+    blue:    '#BEC4DF'
+    magenta: '#E1CED9'
+    cyan:    '#CADEDF'
+    white:   '#eaeaea'
 
   # Dim colors
   #
@@ -401,7 +395,7 @@ selection:
 #   - (Linux/BSD/macOS) `$SHELL` or the user's login shell, if `$SHELL` is unset
 #   - (Windows) powershell
 #shell:
-#  program: /bin/bash
+#  program: /usr/bin/bash
 #  args:
 #    - --login
 

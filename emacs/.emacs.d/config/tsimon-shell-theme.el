@@ -132,7 +132,7 @@
 (setq colour-teal-4 "#5F9B9E")
 (setq colour-teal-5 "#3F878A")
 (setq colour-teal-6 "#226264")
-(setq colour-teal-7 '"#19494B")
+(setq colour-teal-7 "#19494B")
 (setq colour-teal-8 "#113132")
 (setq colour-teal-9 "#0D2526")
 
@@ -151,7 +151,7 @@
 (custom-theme-set-faces
  'tsimon-shell
 
- '(default ((t (:background "#233b5a" :foreground "#fff8dc"))))
+;; '(default ((t (:background "#233b5a" :foreground "#fff8dc"))))
  '(mouse ((t (:background "Grey"))))
  '(cursor ((t (:background "Yellow"))))
  '(border ((t (:background "black"))))
