@@ -38,7 +38,18 @@
 
 (global-undo-tree-mode)
 
-(setq backup-directory-alist '(("." . "~/.emacs.d/backup/")))
+;; Put backup files neatly away
+(let ((backup-dir "~/emacs.d/backup")
+      (auto-saves-dir "~/emacs.d/auto-save-list"))
+  (dolist (dir (list backup-dir auto-saves-dir))
+    (when (not (file-directory-p dir))
+      (make-directory dir t)))
+  (setq backup-directory-alist `(("." . ,backup-dir))
+        auto-save-file-name-transforms `((".*" ,auto-saves-dir t))
+        auto-save-list-file-prefix (concat auto-saves-dir ".saves-")
+		undo-tree-history-directory-alist `(("." . ,backup-dir))
+        tramp-backup-directory-alist `((".*" . ,backup-dir))
+        tramp-auto-save-directory auto-saves-dir))
 
 (setq backup-by-copying t    ; Don't delink hardlinks
       delete-old-versions t  ; Clean up the backups
