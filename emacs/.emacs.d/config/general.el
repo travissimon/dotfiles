@@ -39,8 +39,8 @@
 (global-undo-tree-mode)
 
 ;; Put backup files neatly away
-(let ((backup-dir "~/emacs.d/backup")
-      (auto-saves-dir "~/emacs.d/auto-save-list"))
+(let ((backup-dir "~/.emacs.d/backup")
+      (auto-saves-dir "~/.emacs.d/auto-save-list"))
   (dolist (dir (list backup-dir auto-saves-dir))
     (when (not (file-directory-p dir))
       (make-directory dir t)))
