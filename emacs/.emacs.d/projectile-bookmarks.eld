@@ -1,1 +1,1 @@
-("~/dotfiles/" "~/Work/whiteriver/src/brand-magic/" "~/Work/regsoft/src/")
+("~/dotfiles/" "~/Work/regsoft/src/" "~/Work/nxg/" "~/Work/whiteriver/src/brand-magic/")

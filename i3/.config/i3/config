@@ -181,7 +181,7 @@ mode "resize" {
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 gaps inner 10px
-gaps outer 5px
+gaps outer 0px
 #smart_gaps on
 
 
