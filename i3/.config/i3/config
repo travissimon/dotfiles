@@ -7,7 +7,7 @@ font pango:Operator Book SSm 12
 
 exec --no-startup-id "xrandr --output HDMI-1-1 --auto --left-of eDP-1"
 exec --no-startup-id "picom --config /home/tsimon/.config/picom/picom.conf"
-exec --no-startup-id "feh --bg-fill \"/home/tsimon/Pictures/rothko 01.jpg\""
+exec --no-startup-id "/home/tsimon/.fehbg"
 
 
 # Start XDG autostart .desktop files using dex. See also
@@ -106,12 +106,12 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
+set $ws1 "1: emacs"
+set $ws2 "2: chrome"
+set $ws3 "3: firefox"
+set $ws4 "4: Regsoft"
+set $ws5 "5: terminals"
+set $ws6 "6: term"
 set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
@@ -199,23 +199,36 @@ client.urgent				#53346eff #00000000 #939286ff #36427aff #53346eff
 client.placeholder			#36427aff #00000000 #ead9a4aa #765891aa #36427aaa
 
 # Setup default workspaces
-# workspace "1: emacs" output HDMI-1-1
-# exec --no-startup-id i3-msg "workspace 1; exec --no-startup-id alacrity -e emacs -nw"
+#workspace "1: emacs" output HDMI-1-1
+#exec i3-msg "workspace 1; exec --no-startup-id alacrity -e emacs -nw"
 
-# workspace "2: chrome" output eDP-1
-# exec --no-startup-id i3-msg "workspace 2: chrome; exec --no-startup-id google-chrome --profile-directory=Default"
+#workspace "2: chrome" output eDP-1
+#exec i3-msg "workspace 2: chrome; exec --no-startup-id google-chrome --profile-directory=Default"
 
-# workspace "3: firefox" output eDP-1
-# exec --no-startup-id i3-msg "workspace 3: firefox; exec firefox"
+#workspace "3: firefox" output eDP-1
+#exec i3-msg "workspace 3: firefox; exec firefox"
 
-# workspace "4: Regsoft" output eDP-1
+#workspace "4: Regsoft" output eDP-1
 # exec --no-startup-id i3-msg "workspace 4: Regsoft; exec --no-startup-id google-chrome --profile-directory=\"Profile 2\""
 
-# workspace "5: terms" output eDP-1
+#workspace "5: terms" output eDP-1
 # exec --no-startup-id i3-msg "workspace 5: terms; exec --no-startup-id alacritty; exec --no-startup-id alacritty;"
 
-# workspace "6: term" output eDP-1
+#workspace "6: term" output eDP-1
 # exec --no-startup-id i3-msg "workspace 6: term; exec --no-startup-id alacritty"
 
 
 # exec --no-startup-id i3-msg "workspace 1"
+
+workspace $ws1 output HDMI-1-1
+workspace $ws2 output eDP-1
+workspace $ws3 output eDP-1
+workspace $ws4 output eDP-1
+workspace $ws5 output eDP-1
+workspace $ws6 output eDP-1
+workspace $ws7 output eDP-1
+workspace $ws8 output eDP-1
+workspace $ws9 output eDP-1
+workspace $ws10 output eDP-1
+
+exec --no-startup-id ~/.config/i3/window-startup.sh

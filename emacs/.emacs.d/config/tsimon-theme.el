@@ -31,7 +31,7 @@
 
 (set-face-attribute 'default nil
                     :family "Operator Mono SSm"
-                    :height 100
+                    :height 120
                     :weight 'normal
                     :width 'normal)
 
