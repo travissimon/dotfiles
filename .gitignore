@@ -1,9 +1,11 @@
 emacs/.emacs.d/auto-save-list
 emacs/.emacs.d/backup/
-emacs/.emacs.d/elpa/**
-emacs/.emacs.d/projectile.cache
-emacs/.emacs.d/projectile-bookmarks*
-emacs/.emacs.d/auto-saves-list*
+emacs/.emacs.d/elpa
+emacs/.emacs.d/quelpa
+emacs/.emacs.d/**/#*
+emacs/.emacs.d/**/*~
+emacs/.emacs.d/session*
+emacs/.emacs.d/projectile*
 emacs/.emacs.d/tramp
 emacs/.emacs.d/projects
 emacs/.emacs.d/.cache
