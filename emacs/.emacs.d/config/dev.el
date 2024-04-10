@@ -72,7 +72,15 @@
 
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
-  (setq tab-always-indent 'complete))
+  (setq tab-always-indent 'complete)
+  ;; Emacs 30 and newer: Disable Ispell completion function. As an alternative,
+  ;; try `cape-dict'.
+  (setq text-mode-ispell-word-completion nil)
+
+  ;; Emacs 28 and newer: Hide commands in M-x which do not apply to the current
+  ;; mode.  Corfu commands are hidden, since they are not used via M-x. This
+  ;; setting is useful beyond Corfu.
+  (setq read-extended-command-predicate #'command-completion-default-include-p))
 
 
 (unless (package-installed-p 'quelpa)
@@ -84,25 +92,24 @@
 (require 'quelpa-use-package)
 
 ;; Github copilot
-(use-package copilot
-  :quelpa (copilot :fetcher github-ssh
-                   :repo "zerolfx/copilot.el"
-                   :branch "main"
-                   :files ("dist" "*.el")))
+;; (use-package copilot
+;;  :quelpa (copilot :fetcher github-ssh
+;;                   :repo "zerolfx/copilot.el"
+;;                   :branch "main"
+;;                   :files ("dist" "*.el")))
 
-(require 'copilot)
-(add-hook 'prog-mode-hook 'copilot-mode)
+;; (require 'copilot)
+;; (add-hook 'prog-mode-hook 'copilot-mode)
 
-(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
-
+;; (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+;; (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
 
 ;; specific languages
 (load "/home/tsimon/.emacs.d/config/dev-html.el")
 (load "/home/tsimon/.emacs.d/config/dev-js.el")
 (load "/home/tsimon/.emacs.d/config/dev-typescript.el")
-;;(load "/home/tsimon/.emacs.d/config/dev-pug.el")
+;; (load "/home/tsimon/.emacs.d/config/dev-pug.el")
 ;; (load "/home/tsimon/.emacs.d/config/dev-clojure.el")
-(load "/home/tsimon/.emacs.d/config/dev-go.el")
+;; (load "/home/tsimon/.emacs.d/config/dev-go.el")
 
 
