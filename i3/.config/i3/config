@@ -38,7 +38,7 @@ floating_modifier $mod
 
 # move tiling windows via drag & drop by left-clicking into the title bar,
 # or left-clicking anywhere into the window while holding the floating modifier.
-tiling_drag modifier titlebar
+tiling_drag titlebar
 
 # start a terminal
 bindsym $mod+Return exec alacritty
@@ -174,11 +174,11 @@ mode "resize" {
 }
 
 # Start i3bar to display a workspace bar
-#bar {
-#    status_command i3status -c $HOME/.config/i3status/i3status.conf --transparency
-#}
+bar {
+    status_command i3status -c $HOME/.config/i3status/i3status.conf --transparency
+}
 
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+# exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 
 gaps inner 10px
 gaps outer 0px
@@ -230,5 +230,7 @@ workspace $ws7 output eDP-1
 workspace $ws8 output eDP-1
 workspace $ws9 output eDP-1
 workspace $ws10 output eDP-1
+
+
 
 exec --no-startup-id ~/.config/i3/window-startup.sh

@@ -10,9 +10,6 @@
 
 
 
-;; bootstrap ac
-(unless (package-installed-p 'ac-html-bootstrap)
-  (package-install 'ac-html-bootstrap))
 
 ;; web beautify
 (unless (package-installed-p 'web-beautify)

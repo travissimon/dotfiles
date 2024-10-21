@@ -1,185 +1,22 @@
-;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*- 
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("test-runner"
- (filename . "~/Work/src/regsoft/libs/test-runner/src/lib/")
- (front-context-string . "test-case.interf")
- (rear-context-string . "32 Jul 30 00:22 ")
- (position . 255))
-("lookup-tables-client-lib"
- (filename . "~/Work/src/regsoft/libs/lookup-tables-client-lib/src/lib/")
- (front-context-string . "lookup-tables-cl")
- (rear-context-string . "77 Jul 12 23:36 ")
- (position . 268))
-("lookup-tables"
- (filename . "~/Work/src/regsoft/libs/lookup-tables/src/lib/")
- (front-context-string . "lookup-tables.mo")
- (rear-context-string . "68 Jul 12 23:36 ")
- (position . 257))
-("csv"
- (filename . "~/Work/src/regsoft/libs/csv/src/lib/")
- (front-context-string . "csv-parser.ts\n  ")
- (rear-context-string . "3K Jul  7 19:41 ")
- (position . 247))
-("upload-service"
- (filename . "~/Work/src/regsoft/apps/upload-service/src/")
- (front-context-string . "app\n  drwxr-xr-x")
- (rear-context-string . "0K Jul  5 23:50 ")
- (position . 254))
-("upload-client-lib"
- (filename . "~/Work/src/regsoft/libs/upload-client-lib/src/lib/")
- (front-context-string . "upload-client-li")
- (rear-context-string . "71 Jul  5 23:47 ")
- (position . 261))
-("upload"
- (filename . "~/Work/src/regsoft/libs/upload/src/lib/")
- (front-context-string . "components\n  drw")
- (rear-context-string . "0K Jul  6 00:08 ")
- (position . 250))
+(("debug.service.ts"
+ (filename . "~/Work/regsoft/src/libs/web-lib-debugger/src/lib/services/debug.service.ts")
+ (front-context-string . "	public stepInto")
+ (rear-context-string . "rule;\n		});\n	}\n\n")
+ (position . 2600)
+ (last-modified 26315 39100 274152 239000))
+("debug-scenario.page.ts"
+ (filename . "~/Work/regsoft/src/libs/web-lib-debugger/src/lib/pages/debug-scenario-page/debug-scenario.page.ts")
+ (front-context-string . "	private initEff")
+ (rear-context-string . "ges.emit();\n	}\n\n")
+ (position . 1704)
+ (last-modified 26315 39050 414598 195000))
 ("engine"
  (filename . "~/Work/src/regsoft/libs/engine/src/lib/")
  (front-context-string . "engine.module.ts")
  (rear-context-string . "31 Jun 29 12:57 ")
  (position . 250))
-("rules-client-lib"
- (filename . "~/Work/src/regsoft/libs/rules-client-lib/src/lib/")
- (front-context-string . "rules-client-lib")
- (rear-context-string . "70 Jun  7 23:30 ")
- (position . 260))
-("rules"
- (filename . "~/Work/src/regsoft/libs/rules/src/lib/")
- (front-context-string . "rules.module.ts\n")
- (rear-context-string . "61 Jun  7 23:29 ")
- (position . 249))
-("ontology-client-lib"
- (filename . "~/Work/src/regsoft/libs/ontology-client-lib/src/lib/")
- (front-context-string . "ontology-client-")
- (rear-context-string . "73 Jun  2 17:46 ")
- (position . 263))
-("command-server-lib"
- (filename . "~/Work/src/regsoft/libs/command-server-lib/src/lib/")
- (front-context-string . "command-server-l")
- (rear-context-string . "72 May 27 21:07 ")
- (position . 262))
-("command-client-lib"
- (filename . "~/Work/src/regsoft/libs/command-client-lib/src/lib/")
- (front-context-string . "command-client-l")
- (rear-context-string . "72 May 27 21:07 ")
- (position . 262))
-("command"
- (filename . "~/Work/src/regsoft/libs/command/src/lib/")
- (front-context-string . "command.module.t")
- (rear-context-string . "63 May 27 21:06 ")
- (position . 251))
-("command-service"
- (filename . "~/Work/src/regsoft/apps/command-service/src/")
- (front-context-string)
- (rear-context-string . "3K May 27 14:12 ")
- (position . 420))
-("ontology"
- (filename . "~/Work/src/regsoft/libs/ontology/src/lib/")
- (front-context-string . "commands\n  -rw-r")
- (rear-context-string . "0K May 23 13:22 ")
- (position . 252))
-("destructure-lib"
- (filename . "~/Work/src/regsoft/libs/destructure/src/lib/")
- (front-context-string . "html-node.interf")
- (rear-context-string . "20 Apr 19 23:20 ")
- (position . 329))
-("search-client-lib"
- (filename . "~/Work/src/regsoft/libs/search-client-lib/src/lib/")
- (front-context-string . "..\n  -rw-r--r-- ")
- (rear-context-string . "0K May  9 12:26 ")
- (position . 211))
-("document-search-service"
- (filename . "~/Work/src/regsoft/apps/document-search-service/src/")
- (front-context-string . "app\n  drwxr-xr-x")
- (rear-context-string . "0K May  3 18:36 ")
- (position . 263))
-("search"
- (filename . "~/Work/src/regsoft/libs/search/src/lib/")
- (front-context-string . "search.module.ts")
- (rear-context-string . "62 May  3 18:52 ")
- (position . 250))
-("federal-traceability-service"
- (filename . "~/Work/src/regsoft/apps/federal-traceability-service/src/")
- (front-context-string . "app\n  drwxr-xr-x")
- (rear-context-string . "0K May  3 09:44 ")
- (position . 268))
-("traceability-client-lib"
- (filename . "~/Work/src/regsoft/libs/traceability-client-lib/src/lib/")
- (front-context-string . "components\n  drw")
- (rear-context-string . "0K May  1 17:16 ")
- (position . 267))
-("traceability"
- (filename . "~/Work/src/regsoft/libs/traceability/src/lib/")
- (front-context-string . "jurisdiction.ts\n")
- (rear-context-string . "93 Jan 10 15:00 ")
- (position . 256))
-("text"
- (filename . "~/Work/src/regsoft/libs/text/src/lib/")
- (front-context-string . "char.spec.ts\n  -")
- (rear-context-string . "5K Jan  6 18:41 ")
- (position . 248))
-("dlp"
- (filename . "~/Work/src/regsoft/apps/dlp/src/app/")
- (front-context-string . "app-routing.modu")
- (rear-context-string . "85 Dec 19 17:26 ")
- (position . 247))
-("http-server-lib"
- (filename . "~/Work/src/regsoft/libs/http-server-lib/src/")
- (front-context-string . "index.ts\n  drwxr")
- (rear-context-string . "46 Dec 12 13:38 ")
- (position . 255))
-("http-client-lib"
- (filename . "~/Work/src/regsoft/libs/http-client-lib/src/")
- (front-context-string . "index.ts\n  drwxr")
- (rear-context-string . "46 Dec 12 13:37 ")
- (position . 255))
-("http"
- (filename . "~/Work/src/regsoft/libs/http/src/lib/")
- (front-context-string . "http-lib.module.")
- (rear-context-string . "48 Dec 12 16:11 ")
- (position . 248))
-("auth-server-lib"
- (filename . "~/Work/src/regsoft/libs/auth-server-lib/src/lib/")
- (front-context-string . "..\n  -rw-r--r-- ")
- (rear-context-string . "0K Nov 14 10:57 ")
- (position . 209))
-("server-lib"
- (filename . "~/Work/src/regsoft/libs/server-lib/src/lib/")
- (front-context-string . "database-info.in")
- (rear-context-string . "83 Nov 14 10:57 ")
- (position . 254))
-("auth"
- (filename . "~/Work/src/regsoft/libs/auth/src/lib/")
- (front-context-string . "..\n  -rw-r--r-- ")
- (rear-context-string . "0K Nov 14 10:57 ")
- (position . 198))
-("authentication-service"
- (filename . "~/Work/src/regsoft/apps/authentication-service/src/")
- (front-context-string . "assets\n  drwxr-x")
- (rear-context-string . "0K Dec  3 20:48 ")
- (position . 262))
-("shared-ui"
- (filename . "~/Work/src/regsoft/libs/shared-ui/src/lib/")
- (front-context-string . "components\n  -rw")
- (rear-context-string . "0K Nov 29 09:51 ")
- (position . 253))
-("auth-client-lib"
- (filename . "~/Work/src/regsoft/libs/auth-client-lib/src/lib/")
- (front-context-string . "auth-client-lib.")
- (rear-context-string . "5K Nov 15 20:52 ")
- (position . 259))
-("log-viewer-app"
- (filename . "~/Work/src/regsoft/apps/log-viewer/src/app/")
- (front-context-string . "app.component.ts")
- (rear-context-string . "14 Nov 14 10:57 ")
- (position . 254))
-("util-lib"
- (filename . "~/Work/src/regsoft/libs/util/src/lib/")
- (front-context-string . "context.spec.ts\n")
- (rear-context-string . "69 Nov 14 10:57 ")
- (position . 248))
 )

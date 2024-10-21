@@ -5,16 +5,19 @@
 (use-package lsp-mode
 	:hook (
 		   (typescript-mode . lsp))
-	:commands lsp)
+	:commands lsp
+	:custom
+	(lsp-keymap-prefix "C-c l"))
 
 ;; optionally
-;;(use-package lsp-ui :commands lsp-ui-mode)
 ;; if you are helm user
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+(use-package helm-lsp
+  :after helm
+  :commands helm-lsp-workspace-symbol)
 
 ;; optionally if you want to use debugger
 ;; (use-package dap-mode)
-;; (use-package dap-typescript)
+;;(use-package dap-typescript)
 
 
 (use-package typescript-mode
@@ -26,10 +29,10 @@
 ;; angular language server
 (setq lsp-clients-angular-language-server-command
 	'("node"
-	:init (setq lsp-keymap-prefix "C-c l")	"/home/tsimon/.nvm/versions/node/v19.9.0/lib/node_modules/@angular/language-server"
+	:init (setq lsp-keymap-prefix "C-c l")	"/home/tsimon/.nvm/versions/node/v22.2.0/lib/node_modules/@angular/language-server"
 		"--ngProbeLocations"
-		"/home/tsimon/.nvm/versions/node/v20.5.0/lib/node_modules/"
+		"node_modules/"
 		"--tsProbeLocations"
-		"/home/tsimon/.nvm/versions/node/v20.5.0/lib/node_modules/"
+		"node_modules/"
 		"--stdio"))
 

@@ -83,13 +83,13 @@
   (setq read-extended-command-predicate #'command-completion-default-include-p))
 
 
-(unless (package-installed-p 'quelpa)
-  (with-temp-buffer
-    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-    (eval-buffer)
-    (quelpa-self-upgrade)))
+;; (unless (package-installed-p 'quelpa)
+;;  (with-temp-buffer
+;;    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+;;    (eval-buffer)
+;;    (quelpa-self-upgrade)))
 
-(require 'quelpa-use-package)
+;; (require 'quelpa-use-package)
 
 ;; Github copilot
 ;; (use-package copilot
@@ -106,7 +106,7 @@
 
 ;; specific languages
 (load "/home/tsimon/.emacs.d/config/dev-html.el")
-(load "/home/tsimon/.emacs.d/config/dev-js.el")
+;;(load "/home/tsimon/.emacs.d/config/dev-js.el")
 (load "/home/tsimon/.emacs.d/config/dev-typescript.el")
 ;; (load "/home/tsimon/.emacs.d/config/dev-pug.el")
 ;; (load "/home/tsimon/.emacs.d/config/dev-clojure.el")
