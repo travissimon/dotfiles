@@ -1,3 +1,4 @@
+emacs/.emacs
 emacs/.emacs.d/auto-save-list
 emacs/.emacs.d/backup/
 emacs/.emacs.d/elpa
@@ -23,3 +24,4 @@ emacs/.emacs.d/custom-vars.el
 emacs/.emacs.d/ede-projects.el
 emacs/.emacs.d/nov-places
 emacs/.emacs.d/org-roam.db
+emacs/.emacs.d/projectile-bookmarks.eld
