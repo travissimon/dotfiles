@@ -1,0 +1,50 @@
+working_directory = "/home/tsimon/Work/regsoft/src"
+
+[colors.bright]
+black = "#666666"
+blue = "#BEC4DF"
+cyan = "#CADEDF"
+green = "#C2CFC4"
+magenta = "#E1CED9"
+red = "#8F525A"
+white = "#eaeaea"
+yellow = "#F5ECD2"
+
+[colors.normal]
+black = "#1d1f21"
+blue = "#8691C4"
+cyan = "#8AB6B8"
+green = "#749178"
+magenta = "#C39DB2"
+red = "#844248"
+white = "#dddddd"
+yellow = "#EAD9A4"
+
+[colors.primary]
+background = "#181E39"
+foreground = "#F5ECD2"
+
+[font]
+normal = { family = "DejaVuSansM Nerd Font" }
+bold = { family = "DejaVuSansM Nerd Font" }
+italic = { family = "DejaVuSansM Nerd Font" }
+bold_italic = { family = "DejaVuSansM Nerd Font" }
+size = 10.0
+
+[selection]
+save_to_clipboard = true
+
+[window]
+decorations = "none"
+decorations_theme_variant = "Dark"
+dynamic_title = true
+opacity = 0.9
+startup_mode = "Maximized"
+
+[window.class]
+general = "Terminal"
+instance = "Alacritty"
+
+[window.padding]
+x = 6
+y = 2
