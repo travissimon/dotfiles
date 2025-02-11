@@ -13,19 +13,15 @@
 (use-package helm-gitlab
   :ensure t)
 
-
-(helm-mode 1)
-(helm-fuzzier-mode 1)
-
-
 ;; The default "C-x c" is quite close to "C-x C-c", which quits Emacs.
 ;; Changed to "C-c h". Note: We must set "C-c h" globally, because we
 ;; cannot change `helm-command-prefix-key' once `helm-config' is loaded.
 (global-unset-key (kbd "C-c h"))
-(global-set-key (kbd "C-c h)") 'helm-command-prefix)
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
 (global-unset-key (kbd "C-x c"))
 
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
+(define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
 (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
 
@@ -43,6 +39,8 @@
       helm-move-to-line-cycle-in-source     t
       helm-ff-file-name-history-use-recentf t)
 
+
+
 ;; key bindings
 (global-set-key (kbd "C-x f") 'helm-find-files)
 (global-set-key (kbd "C-M-l") 'dired-jump)
@@ -52,3 +50,11 @@
 
 (global-unset-key (kbd "M-y"))
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+
+
+(setq helm-autoresize-max-height 50)
+(setq helm-autoresize-min-height 50)
+(helm-autoresize-mode 1)
+
+(helm-mode 1)
+(helm-fuzzier-mode 1)
