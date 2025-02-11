@@ -1,7 +1,7 @@
 #!/bin/bash
 
 i3-msg 'workspace "1: emacs"'
-/usr/bin/alacritty -e emacs &
+emacs &
 
 sleep 5s
 
