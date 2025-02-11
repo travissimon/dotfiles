@@ -24,6 +24,7 @@
 
 (load "/home/tsimon/.emacs.d/config/general.el")
 (load "/home/tsimon/.emacs.d/config/helm.el")
+(load "/home/tsimon/.emacs.d/config/casual.el")
 (load "/home/tsimon/.emacs.d/config/orgmode.el")
 (load "/home/tsimon/.emacs.d/config/dev.el")
 (load "/home/tsimon/.emacs.d/config/tsimon-theme.el")
@@ -44,5 +45,5 @@
 ;; for lsp mode performance
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024))
-(setq lsp-idle-delay 0.500)
+(setq lsp-idle-delay 0.400)
 (setq lsp-log-io nil)

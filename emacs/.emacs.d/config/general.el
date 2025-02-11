@@ -58,6 +58,19 @@
       kept-old-versions 2)   ; and some old ones, too
 
 
+;; Relative line numbering
+(setq display-line-numbers-type 'relative) 
+(global-display-line-numbers-mode)
+
+;; Move customisation variables to separate file
+;; This prevents programs from writing custom vals to our config
+(setq custom-file (locate-user-emacs-file "custom-vars.el"))
+(load custom-file 'noerror 'nomessage)
+
+;; refresh files when changed on disk
+(global-auto-revert-mode 1)
+
+
 
 ;; (use-package all-the-icons)
 ;; 

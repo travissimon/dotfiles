@@ -15,6 +15,8 @@
   :after helm
   :commands helm-lsp-workspace-symbol)
 
+
+
 ;; optionally if you want to use debugger
 ;; (use-package dap-mode)
 ;;(use-package dap-typescript)
@@ -22,7 +24,7 @@
 
 (use-package typescript-mode
   :mode "\\.ts\\'"
-  :hook (typescript-mode . lsp-deferred)
+  :hook ((typescript-mode . lsp-deferred) (subword-mode 1))
   :config (setq typescript-indent-level 4)
   :ensure t)
 
