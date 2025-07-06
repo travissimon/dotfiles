@@ -27,8 +27,13 @@
     loader = {
       grub = {
         enable = true;
-        device = "/dev/vda";
+	device = "nodev";
         useOSProber = true;
+	efiSupport = true;
+      };
+      efi = {
+	canTouchEfiVariables = true;
+	efiSysMountPoint = "/boot";
       };
     };
     kernelPackages = pkgs.linuxPackages_latest;
