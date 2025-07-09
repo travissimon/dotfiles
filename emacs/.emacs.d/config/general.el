@@ -48,6 +48,7 @@
         auto-save-file-name-transforms `((".*" ,auto-saves-dir t))
         auto-save-list-file-prefix (concat auto-saves-dir ".saves-")
 		undo-tree-history-directory-alist `(("." . ,backup-dir))
+		create-lockfiles nil
         tramp-backup-directory-alist `((".*" . ,backup-dir))
         tramp-auto-save-directory auto-saves-dir))
 
@@ -70,6 +71,9 @@
 ;; refresh files when changed on disk
 (global-auto-revert-mode 1)
 
+
+;; hippie expand
+(global-set-key [remap dabbrev-expand] 'hippie-expand)
 
 
 ;; (use-package all-the-icons)

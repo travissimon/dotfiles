@@ -18,6 +18,9 @@
 ;; tern
 (add-hook 'js-mode-hook (lambda () (tern-mode t)))
 
+;; subword
+(add-hook 'js-mode-hook 'subword-mode)
+
 ;; (eval-after-load 'tern
 ;;   '(progn
 ;;      (require 'tern-auto-complete)

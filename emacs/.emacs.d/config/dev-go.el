@@ -42,6 +42,8 @@
 
 (add-hook 'go-mode-hook 'my-go-mode-hook)
 
+;; subword mode
+(add-hook 'go-mode-hook 'subword-mode)
 
 
 ;; Helm go package

@@ -12,7 +12,7 @@
 
 
 ;; Org agenda
-(keymap-set org-agenda-mode-map "C-c m" #'casual-agenda-tmenu)
+;;(keymap-set org-agenda-mode-map "C-c m" #'casual-agenda-tmenu)
 
 ;; optional key bindings to make it consistent between casual and org agenda
 (keymap-set org-agenda-mode-map "M-j" #'org-agenda-clock-goto) ; optional

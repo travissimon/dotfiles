@@ -2,21 +2,34 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("debug.service.ts"
- (filename . "~/Work/regsoft/src/libs/web-lib-debugger/src/lib/services/debug.service.ts")
- (front-context-string . "	public stepInto")
- (rear-context-string . "rule;\n		});\n	}\n\n")
- (position . 2600)
- (last-modified 26315 39100 274152 239000))
-("debug-scenario.page.ts"
- (filename . "~/Work/regsoft/src/libs/web-lib-debugger/src/lib/pages/debug-scenario-page/debug-scenario.page.ts")
- (front-context-string . "	private initEff")
- (rear-context-string . "ges.emit();\n	}\n\n")
- (position . 1704)
- (last-modified 26315 39050 414598 195000))
-("engine"
- (filename . "~/Work/src/regsoft/libs/engine/src/lib/")
- (front-context-string . "engine.module.ts")
- (rear-context-string . "31 Jun 29 12:57 ")
- (position . 250))
+(("server-lib-wildlife-workflow"
+ (filename . "~/Work/regsoft/src/libs/server-lib-wildlife-workflow/src/lib/service/")
+ (front-context-string . "app\n  -rw-rw-r--")
+ (rear-context-string . "0K May 14 05:07 ")
+ (position . 230)
+ (last-modified 26662 26586 497029 850000))
+("shared-lib-wildlife-workflow"
+ (filename . "~/Work/regsoft/src/libs/shared-lib-wildlife-workflow/src/lib/")
+ (front-context-string . "models\n  drwxrwx")
+ (rear-context-string . "0K May 14 05:02 ")
+ (position . 222)
+ (last-modified 26662 26647 943672 448000))
+("wildlife-workflow-controller.ts"
+ (filename . "~/Work/regsoft/src/libs/server-lib-wildlife-workflow/src/lib/service/app/wildlife-workflow-controller.ts")
+ (front-context-string . "export class Wil")
+ (rear-context-string . "orkflow-data';\n\n")
+ (position . 659)
+ (last-modified 26659 39576 317806 986000))
+("web-lib-wildlife components"
+ (filename . "~/Work/regsoft/src/libs/web-lib-wildlife/src/lib/components/")
+ (front-context-string . "concierge\n  drwx")
+ (rear-context-string . "0K May  8 21:48 ")
+ (position . 224)
+ (last-modified 26657 17371 74043 942000))
+("webapp-wildlife pages"
+ (filename . "~/Work/regsoft/src/apps/webapp-wildlife/src/app/pages/")
+ (front-context-string)
+ (rear-context-string . ":54 new-licence\n")
+ (position . 403)
+ (last-modified 26657 17328 301182 157000))
 )
