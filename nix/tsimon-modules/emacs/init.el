@@ -1,0 +1,22 @@
+(load "/home/tsimon/.emacs.d/config/general.el")
+(load "/home/tsimon/.emacs.d/config/helm.el")
+(load "/home/tsimon/.emacs.d/config/casual.el")
+(load "/home/tsimon/.emacs.d/config/org.el")
+(load "/home/tsimon/.emacs.d/config/dev.el")
+(load "/home/tsimon/.emacs.d/config/tsimon-theme.el")
+(load "/home/tsimon/.emacs.d/config/themes.el")
+(load "/home/tsimon/.emacs.d/config/misc.el")
+
+
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell (replace-regexp-in-string
+                          "[ \t\n]*$"
+                          ""
+                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq eshell-path-env path-from-shell) ; for eshell users
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(when window-system (set-exec-path-from-shell-PATH))
+
+(message "Emacs configuration loaded")

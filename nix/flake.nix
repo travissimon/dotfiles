@@ -1,54 +1,48 @@
 {
-  description = "Moggio OS setup";
+  description = "Moggio configuration";
 
   inputs = {
-    # Nixpkgs
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    # Hyprland
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
       inputs.hyprland.follows = "hyprland";
     };
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
-    self,
     nixpkgs,
     home-manager,
     hyprland,
+    self,
     ...
-  } @ inputs: let
-    inherit (self) outputs;
-
-  in {
+  }@inputs: {
 
     nixosConfigurations = {
       moggio = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs outputs; };
+        system = "x86_64-linux";
         modules = [
-          ./nixos/configuration.nix
+          ./configuration.nix
+
+          home-manager.nixosModules.home-manager {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              inherit hyprland;
+            };
+            home-manager.users.tsimon = ./home-tsimon.nix;
+          }
+
         ];
       };
     };
-
-    homeConfigurations = {
-      tsimon = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = { inherit inputs outputs; };
-        modules = [
-          ./home-manager/moggio-home.nix
-        ];
-      };
-    };
-
   };
-
 }
