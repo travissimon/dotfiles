@@ -34,7 +34,7 @@
         cd = "z";
         cdi = "zi";
 
-        nrs = "sudo nixos-rebuild switch";
+        nrs = "sudo nixos-rebuild switch --flake /home/tsimon/dotfiles/nix";
       };
       bashrcExtra = ''
         export PATH="$PATH:$HOME/bin:$HOME/go/bin"

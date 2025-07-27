@@ -14,6 +14,7 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
+    kernelModules = [ "i2c-dev" "i2c-piix4" ];
   };
 
   networking.hostName = "moggio"; # Define your hostname.
@@ -47,6 +48,11 @@
   };
 
   nix = {
+    nixPath = [
+      "nixos-config=/home/tsimon/dotfiles/nix"
+      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+      "/nix/var/nix/profiles/per-user/root/channels"
+    ];
     settings = {
       experimental-features = [
         "nix-command"
@@ -79,6 +85,14 @@
     xserver.xkb = {
       layout = "us";
       variant = "";
+    };
+
+    udev.packages = [
+      pkgs.openrgb-with-all-plugins
+    ];
+
+    hardware = {
+      openrgb.enable = true;
     };
 
     printing = {
@@ -186,6 +200,7 @@
       nmap
       netcat
       nix-output-monitor
+      openrgb-with-all-plugins
       pciutils
       ripgrep
       su

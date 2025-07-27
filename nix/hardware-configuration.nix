@@ -33,6 +33,7 @@
       package = config.boot.kernelPackages.nvidiaPackages.beta;
     };
     opentabletdriver.enable = true;
+    i2c.enable = true;
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
