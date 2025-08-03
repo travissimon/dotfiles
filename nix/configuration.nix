@@ -88,7 +88,7 @@
   };
 
   services = {
-    xserver.enable = false;
+    xserver.enable = true;
     xserver.xkb = {
       layout = "us";
       variant = "";
