@@ -20,7 +20,6 @@
 
     packages = with pkgs; [
       angular-language-server
-      audacity
       bat
       bluez
       bluez-tools
