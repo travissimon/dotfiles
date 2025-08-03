@@ -14,6 +14,7 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "i2c-dev" "i2c-piix4" ];
   };
 
