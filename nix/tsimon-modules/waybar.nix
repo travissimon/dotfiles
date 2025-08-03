@@ -69,10 +69,10 @@
           ];
 
           "custom/nix-updates" = {
-            exec = "bash $HOME/bin/update_checker";
+            exec = "sh -e $HOME/bin/update_checker";
             interval = "3600";
             # signal = 12;
-            #on-click = "bash $HOME/bin/update_checker";
+            on-click = "sh -e $HOME/bin/update_checker";
             on-click-right = "rm ~/.cache/nix-update-last-run";
             return-type = "json";
             format = "{icon}  {}";
@@ -202,7 +202,7 @@
 # ===== Configuration =====
 UPDATE_INTERVAL=3599  # Check interval in seconds (1 hour)
 #NIXOS_CONFIG_PATH="$HOME/.config/nixos"  # Path to NixOS configuration
-NIXOS_CONFIG_PATH="/etc/nixos"  # Path to NixOS configuration
+NIXOS_CONFIG_PATH="$HOME/dotfiles/nix"  # Path to NixOS configuration
 CACHE_DIR="$HOME/.cache/nix-update"
 STATE_FILE="$CACHE_DIR/nix-update-state"
 LAST_RUN_FILE="$CACHE_DIR/nix-update-last-run"
