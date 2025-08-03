@@ -80,8 +80,15 @@
     ];
   };
 
+  hardware = {
+    sane = {
+      enable = true;
+      extraBackends = [ pkgs.hplipWithPlugin ];
+    };
+  };
+
   services = {
-    xserver.enable = true;
+    xserver.enable = false;
     xserver.xkb = {
       layout = "us";
       variant = "";
@@ -104,6 +111,11 @@
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
+      publish = {
+        enable = true;
+        addresses = true;
+        userServices = true;
+      };
     };
 
     dbus = {
@@ -143,7 +155,7 @@
   users.users.tsimon = {
     isNormalUser = true;
     description = "Travis Simon";
-    extraGroups = [ "wheel" "audio" ];
+    extraGroups = [ "wheel" "audio" "scanner" "lp" ];
     packages = with pkgs; [
     ];
   };
@@ -180,9 +192,12 @@
       findutils
       file
       gawk
+      gcc
+      ghostscript
       ghostty
       gnome-system-monitor
       gnugrep
+      gnumake
       gnused
       gnupg
       gnutar
@@ -193,6 +208,8 @@
       iftop
       kitty
       less
+      libjpeg
+      libpng
       lm_sensors
       ltrace
       lsof
@@ -203,6 +220,9 @@
       openrgb-with-all-plugins
       pciutils
       ripgrep
+      rsync
+      sane-frontends
+      sane-backends
       su
       stow
       strace
@@ -211,11 +231,11 @@
       tree
       usbutils
       vlc
-      which
-      zstd
-      rsync
-      xz
       wget
+      which
+      xsane
+      zstd
+      xz
     ];
   };
 
