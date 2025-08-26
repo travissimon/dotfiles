@@ -194,7 +194,7 @@
     file."bin/update_checker" = {
       executable = true;
       text = ''
-#!/bin/bash
+#!/etc/profiles/per-user/tsimon/bin/bash
 
 # NixOS Update Checker for Waybar
 # This script checks for NixOS updates and outputs JSON for Waybar integration

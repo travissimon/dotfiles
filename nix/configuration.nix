@@ -202,15 +202,19 @@
       gnused
       gnupg
       gnutar
+      go
       google-chrome
       gzip
       hplipWithPlugin
+      inotify-tools
       iotop
       iftop
       kitty
       less
       libjpeg
       libpng
+      libreoffice
+      llama-cpp
       lm_sensors
       ltrace
       lsof
@@ -219,6 +223,7 @@
       netcat
       nix-output-monitor
       openrgb-with-all-plugins
+      open-webui
       pciutils
       ripgrep
       rsync

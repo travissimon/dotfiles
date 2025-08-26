@@ -9,6 +9,7 @@
     ./hyprlock.nix
     # ./hyprpanel.nix
     ./hypridle.nix
+    ./obs-studio.nix
     ./oh-my-posh.nix
     ./waybar.nix
     ./zoxide.nix
