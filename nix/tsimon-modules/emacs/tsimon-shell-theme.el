@@ -527,6 +527,9 @@
  '(list-mode-item-selected ((t (:background "gray68"))))
  '(log-view-file-face ((t (:bold t :background "grey70" :weight bold))))
  '(log-view-message-face ((t (:background "grey85"))))
+
+ '(magit-header-line ((t (:foreground "deepskyblue3"))))
+
  '(magenta ((t (:foreground "gray85"))))
  '(makefile-space-face ((t (:background "hotpink" :foreground "white"))))
  '(man-bold ((t (:bold t :weight bold))))

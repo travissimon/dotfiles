@@ -19,7 +19,6 @@
 
       kernelModules = [ "nvidia" ];
     };
-
     kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
   };

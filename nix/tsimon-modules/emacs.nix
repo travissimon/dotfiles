@@ -22,6 +22,9 @@
     file.".emacs.d/config/dev-closure.el" = {
       source = ./emacs/dev-closure.el;
     };
+    file.".emacs.d/config/dev-elixir.el" = {
+      source = ./emacs/dev-elixir.el;
+    };
     file.".emacs.d/config/dev-go.el" = {
       source = ./emacs/dev-go.el;
     };

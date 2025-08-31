@@ -119,6 +119,7 @@
       '((bash-mode . bash-ts-mode)
 	(css-mode . css-ts-mode)
 	(dockerfile-mode . dockerfile-ts-mode)
+	(elixir-mode . elixir-ts-mode)
 	(go-mod-mode . go-mod-ts-mode)
 	(go-mode . go-ts-mode)
 	(html-mode . html-ts-mode)

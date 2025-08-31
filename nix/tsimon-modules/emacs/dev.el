@@ -24,6 +24,7 @@
 (use-package lsp-mode
   :hook (
 	   (typescript-ts-mode . lsp)
+	   (elixir-ts-mode)
 	   (html-ts-mode . lsp)
 	   (css-ts-mode . lsp)
 	   (js-ts-mode . lsp)
@@ -183,6 +184,7 @@
 
 
 ;; specific language support
+(load "/home/tsimon/.emacs.d/config/dev-elixir.el")
 (load "/home/tsimon/.emacs.d/config/dev-html.el")
 (load "/home/tsimon/.emacs.d/config/dev-js.el")
 (load "/home/tsimon/.emacs.d/config/dev-typescript.el")

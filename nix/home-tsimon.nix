@@ -48,12 +48,14 @@
       nodePackages.nodejs
       nvd
       ollama-cuda
-      python3
-      python313Packages.gpustat
-      python313Packages.modern-colorthief
+      # python3
+      # python313Packages.cython
+      # python313Packages.gpustat
+      # python313Packages.modern-colorthief
       pywal16
       postman
       slurp
+      shotcut
       steam
       swww
       typescript

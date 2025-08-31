@@ -55,6 +55,7 @@
           modules-left = [
             "hyprland/workspaces"
             "custom/nix-updates"
+            "custom/toggle-opacity"
           ];
           modules-center = [
             "custom/hello-from-waybar"
@@ -83,6 +84,27 @@
               updated = "";
               error = "";
             };
+          };
+
+          "custom/toggle-opacity" = {
+            exec = pkgs.writeShellScript "set-opacity-initial" ''
+              hyprctl keyword decoration:inactive_opacity 0.85;
+              hyprctl keyword decoration:active_opacity 0.95;
+              echo "semi";
+           '';
+            on-click = pkgs.writeShellScript "set-opacity-opaque" ''
+              hyprctl keyword decoration:inactive_opacity 1;
+              hyprctl keyword decoration:active_opacity 1;
+              echo "opaque";
+           '';
+            on-click-right = pkgs.writeShellScript "set-opacity-semi" ''
+              hyprctl keyword decoration:inactive_opacity 0.85;
+              hyprctl keyword decoration:active_opacity 0.95;
+              echo "semi";
+           '';
+            format = "󱡔   {}";
+            tooltip = true;
+            tooltip-format = "left click: full opacity; right-click semi-opaque";
           };
 
           "hyprlan/workspaces" = {
