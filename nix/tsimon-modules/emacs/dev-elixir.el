@@ -1,6 +1,5 @@
 ;; Elixir
 
-;; pug-mode for HAML-like express templates
-
-(add-to-list 'auto-mode-alist '("\\.ex\\'" . elixir-ts-mode))
-(add-hook 'elixir-ts-mode-hook 'subword-mode)
+(add-to-list 'auto-mode-alist '("\\.ex\\'" . elixir-mode))
+(add-hook 'elixir-mode-hook 'subword-mode)
+(add-hook 'elixir-mode-hook #'display-fill-column-indicator-mode)

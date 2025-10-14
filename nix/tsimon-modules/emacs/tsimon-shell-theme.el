@@ -528,7 +528,12 @@
  '(log-view-file-face ((t (:bold t :background "grey70" :weight bold))))
  '(log-view-message-face ((t (:background "grey85"))))
 
+ '(magit-section-heading ((t (:foreground "deepskyblue3"))))
+ '(magit-section-heading-selection ((t (:foreground "deepskyblue3"))))
  '(magit-header-line ((t (:foreground "deepskyblue3"))))
+ '(magit-diff-file-heading-highlight ((t (:background "darkslateblue" :foreground "gray95"))))
+ '(magit-diff-file-heading-selection ((t (:background "darkslateblue" :foreground "gray70"))))
+ '(magit-section-highlight ((t (:background "royalblue4" :foreground "gray95"))))
 
  '(magenta ((t (:foreground "gray85"))))
  '(makefile-space-face ((t (:background "hotpink" :foreground "white"))))

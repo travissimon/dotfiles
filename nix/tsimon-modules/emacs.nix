@@ -75,6 +75,7 @@
         epkgs.casual
         epkgs.casual-suite
         epkgs.company
+        epkgs.elixir-mode
         epkgs.scss-mode
         epkgs.dap-mode
         epkgs.editorconfig

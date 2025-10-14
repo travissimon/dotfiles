@@ -181,6 +181,20 @@
     obs-studio = {
       enableVirtualCamera = true;
     };
+
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        fontconfig
+        wayland
+        libGL
+        alsa-lib
+        vulkan-loader
+        libpulseaudio
+        speechd-minimal
+        udev
+      ];
+    };
   };
 
   # System-wide applications
@@ -194,11 +208,13 @@
       btop-cuda
       brotli
       bzip2
+      chromedriver
       coreutils-full
       cpio
       curl
       devenv
       diffutils
+      docker
       ffmpeg
       findutils
       file
@@ -213,6 +229,7 @@
       gnupg
       gnutar
       go
+      godot
       google-chrome
       gzip
       hplipWithPlugin
@@ -228,6 +245,7 @@
       lm_sensors
       ltrace
       lsof
+      naps2
       ncurses
       nmap
       netcat

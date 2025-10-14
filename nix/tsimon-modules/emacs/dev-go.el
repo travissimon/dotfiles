@@ -32,9 +32,11 @@
 ;; subword mode
 (add-hook 'go-mode-hook 'subword-mode)
 
+(add-hook 'go-mode-hook #'display-fill-column-indicator-mode)
 
 ;; Helm go package
 
 (autoload 'helm-go-package "helm-go-package")
 (eval-after-load 'go-mode
   '(substitute-key-definition 'go-import-add 'helm-go-package go-mode-map))
+

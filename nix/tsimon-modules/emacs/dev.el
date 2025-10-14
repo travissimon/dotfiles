@@ -17,6 +17,7 @@
   (setq tab-always-indent 'complete))
 
 
+(add-hook 'minibuffer-setup-hook #'subword-mode)
 (subword-mode)
 
 ;; Install LSP
@@ -24,7 +25,7 @@
 (use-package lsp-mode
   :hook (
 	   (typescript-ts-mode . lsp)
-	   (elixir-ts-mode)
+	   (elixir-mode . lsp)
 	   (html-ts-mode . lsp)
 	   (css-ts-mode . lsp)
 	   (js-ts-mode . lsp)
@@ -182,6 +183,8 @@
 ;; (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
 ;; (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
 
+
+(setopt display-fill-column-indicator-column 100)
 
 ;; specific language support
 (load "/home/tsimon/.emacs.d/config/dev-elixir.el")

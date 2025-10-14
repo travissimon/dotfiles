@@ -1,6 +1,10 @@
 ;; Typescript development
 
-(add-hook 'typescript-mode-hook 'subword-mode)
+(add-hook 'typescript-ts-mode-hook (lambda ()
+	(subword-mode +1)
+	(setopt display-fill-column-indicator-column 100)
+	(display-fill-column-indicator-mode)))
+
 
 (with-eval-after-load 'typescript-mode (add-hook 'typescript-mode-hook #'lsp))
 
