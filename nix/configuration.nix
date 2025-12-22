@@ -159,12 +159,14 @@
   # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.tsimon = {
-    isNormalUser = true;
-    description = "Travis Simon";
-    extraGroups = [ "wheel" "audio" "scanner" "lp" ];
-    packages = with pkgs; [
-    ];
+  users.users = {
+    tsimon = {
+      isNormalUser = true;
+      description = "Travis Simon";
+      extraGroups = [ "wheel" "audio" "scanner" "lp" ];
+      packages = with pkgs; [
+      ];
+    };
   };
 
   programs = {

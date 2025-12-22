@@ -49,6 +49,7 @@
       nodePackages.nodejs
       nvd
       ollama-cuda
+      parallel
       python3
       python313Packages.cython
       python313Packages.gpustat

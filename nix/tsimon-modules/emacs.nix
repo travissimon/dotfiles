@@ -70,6 +70,7 @@
       package = pkgs.emacs-gtk;
       extraPackages = epkgs: [
         epkgs.ac-html
+        epkgs.alchemist
         epkgs.all-the-icons
         epkgs.auctex
         epkgs.casual

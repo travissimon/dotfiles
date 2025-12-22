@@ -571,6 +571,7 @@
  '(outline-2 ((t (:inherit font-lock-variable-name-face :height 1.2))))
  '(outline-3 ((t (:inherit font-lock-keyword-face :height 1.15))))
  '(outline-4 ((t (:inherit font-lock-comment-face :height 1.1))))
+ '(org-table ((t (:foreground "gray85"))))
  '(paren-blink-off ((t (:foreground "gray80"))))
  '(paren-face-match ((t (:background "turquoise"))))
  '(paren-face-mismatch ((t (:background "purple" :foreground "white"))))
