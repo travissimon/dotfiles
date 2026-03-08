@@ -90,7 +90,6 @@
         epkgs.helm-flx
         epkgs.helm-fuzzier
         epkgs.helm-gitlab
-        epkgs.helm-lsp
         epkgs.helm-projectile
         epkgs.htmlize
         epkgs.js2-mode

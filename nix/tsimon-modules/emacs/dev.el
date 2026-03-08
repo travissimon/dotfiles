@@ -79,13 +79,13 @@
 
 
 ;; DAP mode
-;;(use-package dap
-;;  :config (editorconfig-mode 1))
+(use-package dap
+  :config (editorconfig-mode 1))
 
-;;(dap-mode 1)
+(dap-mode 1)
 
 ;; The modes below are optional
-;;(dap-ui-mode 1)
+(dap-ui-mode 1)
 ;; enables mouse hover support
 ;;(dap-tooltip-mode 1)
 ;; use tooltips for mouse hover

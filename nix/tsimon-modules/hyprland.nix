@@ -5,7 +5,6 @@
   config,
   ...
 }: {
-
     wayland.windowManager.hyprland = {
       enable = true;
       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
@@ -29,18 +28,21 @@
         decoration = {
           rounding = 10;
           rounding_power = 2;
-          active_opacity = 0.95;
+          active_opacity = 0.96;
           inactive_opacity = 0.85;
 
           shadow = {
             enabled = true;
-            offset = "1 3";
+            range = 4;
+            render_power = 2;
+            offset = "2 4";
+            color = "rgba(1a1a1a80)";
           };
+        };
 
-          animations = {
-            bezier = "smoov, 0.5, 0, .5, 1";
-            animation = "workspaces, true, 1.5, linear, fade";
-          };
+        animations = {
+          bezier = "smoov, 0.5, 0, 0.5, 1";
+          animation = "workspaces, 1, 2, linear, fade";
         };
 
         group = {
@@ -79,16 +81,17 @@
           "$mod, E, exec, $fileManager"
           "$mod, V, togglefloating,"
           "$mod, R, exec, $menu"
-          "$mod, P, pseudo," # dwindle                                                                                                         
-          "$mod, J, togglesplit," # dwindle                                                                                                    
+          "$mod, S, exec, hyprshot -m region --clipboard-only"
+          "$mod, P, pseudo," # dwindle
+          "$mod, J, layoutmsg, swapsplit" # dwindle
 
-          # Move focus with mainMod + arrow keys                                                                                               
+          # Move focus with mainMod + arrow keys
           "$mod, left, movefocus, l"
           "$mod, right, movefocus, r"
           "$mod, up, movefocus, u"
           "$mod, down, movefocus, d"
 
-          # Switch workspaces with mainMod + [0-9]                                                                                             
+          # Switch workspaces with mainMod + [0-9]
           "$mod, 1, workspace, 1"
           "$mod, 2, workspace, 2"
           "$mod, 3, workspace, 3"
@@ -100,7 +103,7 @@
           "$mod, 9, workspace, 9"
           "$mod, 0, workspace, 10"
 
-          # Move active window to a workspace with mainMod + SHIFT + [0-9]                                                                     
+          # Move active window to a workspace with mainMod + SHIFT + [0-9]
           "$mod SHIFT, 1, movetoworkspace, 1"
           "$mod SHIFT, 2, movetoworkspace, 2"
           "$mod SHIFT, 3, movetoworkspace, 3"

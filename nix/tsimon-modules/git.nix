@@ -8,8 +8,8 @@
 
     git = {
       enable = true;
-      userName = "tsimon";
-      userEmail = "tsimon@gmail.com";
+      settings.user.name = "tsimon";
+      settings.user.email = "tsimon@gmail.com";
     };
 
   };

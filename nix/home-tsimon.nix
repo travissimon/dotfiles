@@ -21,6 +21,7 @@
     packages = with pkgs; [
       angular-language-server
       bat
+      beam28Packages.elixir-ls
       bluez
       bluez-tools
       brightnessctl
@@ -30,6 +31,7 @@
       code-cursor-fhs
       dconf
       easyeffects
+      expressvpn
       eza
       fastfetch
       fortune
@@ -39,7 +41,6 @@
       grim
       grimblast
       gtksourceview3
-      helvum
       http-server
       jq
       kubectl
@@ -48,7 +49,6 @@
       lsd
       nodePackages.nodejs
       nvd
-      ollama-cuda
       parallel
       python3
       python313Packages.cython
@@ -58,7 +58,6 @@
       postman
       slurp
       shotcut
-      steam
       swww
       typescript
       typescript-language-server

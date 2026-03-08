@@ -186,7 +186,6 @@
             "format" = "   {volume}%";
             "format-muted" = "󰟎";
             "on-click" = "easyeffects";
-            "on-right-click" = "helvum";
             "max-volume" = 150;
             "scroll-step" = 0.5;
           };
@@ -240,7 +239,7 @@ GRACE_PERIOD=60  # Grace period in seconds (60 seconds) after boot/resume
 
 # If true, update the lock file in the config folder.
 # If false, copy config to temp folder first, and then update the temp dir's lock file.
-UPDATE_LOCK_FILE="false"
+UPDATE_LOCK_FILE="true"
 
 # If you have a separate script to update your lock file (i.e. "nix flake update" script)
 # and you have UPDATE_LOCK_FILE set to "false",
@@ -411,10 +410,10 @@ function check_for_updates() {
         # Use the config directory directly
         cd "$NIXOS_CONFIG_PATH" || return 1
         nix flake update
-        nix build .#nixosConfigurations.$(hostname).config.system.build.toplevel
+        nix build .#nixosConfigurations.$(hostname).config.system.build.toplevel --out-link "$tempdir/result"
         if [ "$?" -eq 0 ]; then
-            updates=$(nvd diff /run/current-system ./result | grep -e '\[U' | wc -l)
-            tooltip=$(nvd diff /run/current-system ./result | grep -e '\[U' | awk '{ for (i=3; i<NF; i++) printf $i " "; if (NF >= 3) print $NF; }' ORS='\\n')
+            updates=$(nvd diff /run/current-system "$tempdir/result" | grep -e '\[U' | wc -l)
+            tooltip=$(nvd diff /run/current-system "$tempdir/result" | grep -e '\[U' | awk '{ for (i=3; i<NF; i++) printf $i " "; if (NF >= 3) print $NF; }' ORS='\\n')
         else
             return 1
         fi

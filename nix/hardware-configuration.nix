@@ -17,7 +17,7 @@
         "xhci_pci"
       ];
 
-      kernelModules = [ "nvidia" ];
+      kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
     };
     kernelModules = [ "kvm-amd" ];
     extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
@@ -26,10 +26,18 @@
   hardware = {
     graphics = {
       enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        vulkan-loader
+      ];
     };
     nvidia = {
+      powerManagement.enable = false;
+      powerManagement.finegrained = false;
+      modesetting.enable = true;
       open = true;
-      package = config.boot.kernelPackages.nvidiaPackages.beta;
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
     };
     opentabletdriver.enable = true;
     i2c.enable = true;
