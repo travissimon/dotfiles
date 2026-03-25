@@ -292,6 +292,8 @@ Shows the full new file content with diff markers on changed lines."
     (with-current-buffer buf
       (let ((inhibit-read-only t))
         (erase-buffer)
+        ;; Activate mode FIRST — it calls kill-all-local-variables via special-mode
+        (magit-diff-review-mode)
         (setq magit-diff-review--file filepath)
         (setq magit-diff-review--revision rev)
         (setq magit-diff-review--showing-diff t)
@@ -303,7 +305,6 @@ Shows the full new file content with diff markers on changed lines."
         ;; Show diff view
         (insert magit-diff-review--diff-text)
         (goto-char (point-min))
-        (magit-diff-review-mode)
         (message "Diff review: M-n/M-p navigate hunks, TAB toggle view, q quit")))
     (pop-to-buffer buf)))
 
