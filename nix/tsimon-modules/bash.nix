@@ -37,7 +37,7 @@
         nrs = "sudo nixos-rebuild switch --flake /home/tsimon/dotfiles/nix";
       };
       bashrcExtra = ''
-        export PATH="$PATH:$HOME/bin:$HOME/go/bin:$HOME/.npm-packages/bin:$HOME/.npm-packages-lib/node_modules/@mermaid-js/mermaid-cli/src"
+        export PATH="$PATH:$HOME/bin:$HOME/go/bin:$HOME/.npm-packages/bin:$HOME/.npm-packages-lib/node_modules/@mermaid-js/mermaid-cli/src:$HOME/.local/bin"
         export NODE_PATH="$HOME/.npm-packages/lib/node_modules"
       '';
     };

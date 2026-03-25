@@ -68,6 +68,10 @@
           "layout" = "dwindle";
         };
 
+        cursor = {
+          no_hardware_cursors = true;
+        };
+
         bindm = [
           "$mod, mouse:272, movewindow"
           "$mod, mouse:273, resizewindow"

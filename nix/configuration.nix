@@ -250,6 +250,7 @@
       nix-output-monitor
       openrgb-with-all-plugins
       pciutils
+      pgadmin4-desktopmode
       qemu
       ripgrep
       rsync

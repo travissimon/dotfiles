@@ -61,7 +61,10 @@
     file.".emacs.d/config/tsimon-theme.el" = {
       source = ./emacs/tsimon-theme.el;
     };
-    
+    file.".emacs.d/config/magit-diff-review.el" = {
+      source = ./emacs/magit-diff-review.el;
+    };
+
   };
 
   programs = {

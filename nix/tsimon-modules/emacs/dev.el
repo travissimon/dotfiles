@@ -73,6 +73,9 @@
 (use-package magit
   :bind ("C-x g" . magit-status))
 
+;; custom magit diff review mode
+(load "/home/tsimon/.emacs.d/config/magit-diff-review.el")
+
 ;; editor config
 (use-package editorconfig
   :config (editorconfig-mode 1))
