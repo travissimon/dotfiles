@@ -235,25 +235,39 @@ A directory's BITS is the bitwise-OR of all descendant files' BITS."
     (4 'review-committed-face)
     (_ 'review-mixed-face)))
 
-(defun review--format-line (relpath bits)
-  "Return a propertized string for one file line: `  S U C   RELPATH\\n'."
-  (let* ((s (if (zerop (logand bits review--bit-staged))    ?\s ?S))
-         (u (if (zerop (logand bits review--bit-unstaged))  ?\s ?U))
-         (c (if (zerop (logand bits review--bit-committed)) ?\s ?C))
-         (face (review--face-for-bitmask bits))
+(defun review--format-line (entry)
+  "Return a propertized string for ENTRY plist (:kind :name :bits :relpath).
+Parent rows (:kind parent) have blank status columns."
+  (let* ((kind (plist-get entry :kind))
+         (name (plist-get entry :name))
+         (bits (plist-get entry :bits))
+         (relpath (plist-get entry :relpath))
+         (s (if (or (eq kind 'parent)
+                    (zerop (logand bits review--bit-staged)))    ?\s ?S))
+         (u (if (or (eq kind 'parent)
+                    (zerop (logand bits review--bit-unstaged)))  ?\s ?U))
+         (c (if (or (eq kind 'parent)
+                    (zerop (logand bits review--bit-committed))) ?\s ?C))
+         (face (if (eq kind 'parent)
+                   'default
+                 (review--face-for-bitmask bits)))
          (prefix (format "  %c %c %c   " s u c))
-         (path (propertize relpath
-                           'face face
-                           'mouse-face 'highlight
-                           'review-entry (cons 'file relpath))))
-    (concat prefix path "\n")))
+         (label (propertize name
+                            'face face
+                            'mouse-face 'highlight
+                            'review-entry (cons kind relpath))))
+    (concat prefix label "\n")))
 
 (defun review--build-buffer (root scope)
-  "Populate the current buffer with a review listing for ROOT, SCOPE.
-Sets buffer-locals, switches to `review-mode' if not already, and
-sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
-  (let* ((main (review--detect-main-branch))
-         (entries (review--collect-files root scope main))
+  "Populate the current buffer with a single-level review listing for ROOT, SCOPE.
+SCOPE is normalized to \"\" or \"sub/dir/\".  Sets buffer-locals, switches to
+`review-mode' if not already, sets `header-line-format', and renames the
+buffer to reflect the current scope.  Caller must `pop-to-buffer' afterwards
+(only required for the first display; descend/ascend rebuild in place)."
+  (let* ((scope (review--normalize-scope scope))
+         (main (review--detect-main-branch))
+         (all-entries (review--collect-files root scope main))
+         (entries (review--aggregate-entries all-entries scope))
          (inhibit-read-only t))
     (unless (derived-mode-p 'review-mode)
       (review-mode))
@@ -263,14 +277,26 @@ sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
     (setq header-line-format
           (format "review: %s%s  (vs %s)"
                   (abbreviate-file-name root)
-                  (or scope "")
+                  scope
                   main))
+    (rename-buffer
+     (format "*review: %s*"
+             (abbreviate-file-name (expand-file-name scope root)))
+     'unique)
     (erase-buffer)
+    (when (not (string-empty-p scope))
+      (insert (review--format-line
+               (list :kind 'parent
+                     :name ".."
+                     :bits 0
+                     :relpath (review--parent-scope scope)))))
     (if (null entries)
         (insert "  (no files)\n")
       (dolist (e entries)
-        (insert (review--format-line (car e) (cdr e)))))
-    (goto-char (point-min))))
+        (insert (review--format-line e))))
+    (goto-char (point-min))
+    (when (review--line-entry)
+      (goto-char (+ (line-beginning-position) review--path-column)))))
 
 ;; --- Major mode ---
 
@@ -281,6 +307,7 @@ sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
     (define-key map (kbd "C-o")     #'review-find-file)
     (define-key map (kbd "n")       #'review-next-file)
     (define-key map (kbd "p")       #'review-prev-file)
+    (define-key map (kbd "^")       #'review-ascend)
     (define-key map (kbd "g")       #'review-refresh)
     (define-key map (kbd "q")       #'quit-window)
     map)
@@ -296,7 +323,7 @@ sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
 ;; --- Line-level helpers ---
 
 (defconst review--path-column 10
-  "Column at which the file path begins on each file line.
+  "Column at which the entry name begins on each entry line.
 Matches the 10-char prefix produced by `review--format-line':
 2 indent + 3 status chars + 2 separators + 3 trailing spaces.")
 
@@ -310,16 +337,23 @@ or nil if not on an entry line.  KIND is `file', `dir', or `parent'."
 ;; --- RET handler ---
 
 (defun review-visit-file ()
-  "Open the file at point via `magit-diff-review-open' against the main branch.
-If the file no longer exists on disk (deleted), message and decline."
+  "Open the entry at point.
+Files: open via `magit-diff-review-open' against the main branch.
+Directories: rescope the buffer into the directory.
+Parent (..): rescope to the parent directory.
+If a file no longer exists on disk (deleted), message and decline."
   (interactive)
-  (let* ((entry (review--line-entry))
-         (relpath (and entry (eq (car entry) 'file) (cdr entry))))
+  (let ((entry (review--line-entry)))
     (cond
-     ((null relpath)
-      (message "No file at point"))
-     (t
-      (let* ((root (or review--root
+     ((null entry)
+      (message "No entry at point"))
+     ((eq (car entry) 'parent)
+      (review-ascend))
+     ((eq (car entry) 'dir)
+      (review-descend (cdr entry)))
+     ((eq (car entry) 'file)
+      (let* ((relpath (cdr entry))
+             (root (or review--root
                        (user-error "review: buffer has no root")))
              (main (or review--main-branch
                        (user-error "review: buffer has no main-branch")))
@@ -331,7 +365,8 @@ If the file no longer exists on disk (deleted), message and decline."
             (magit-diff-review-open relpath main))))))))
 
 (defun review-find-file ()
-  "Open the file at point with `find-file' (no diff/review wrapper)."
+  "Open the entry at point with `find-file' (no diff/review wrapper).
+File entries open with `find-file'; directory entries open in dired."
   (interactive)
   (let* ((entry (review--line-entry))
          (relpath (and entry (cdr entry))))
@@ -393,6 +428,27 @@ If the file no longer exists on disk (deleted), message and decline."
       (if (eobp)
           (goto-char (point-min))
         (goto-char (+ (line-beginning-position) review--path-column))))))
+
+;; --- Scope navigation ---
+
+(defun review-descend (relpath)
+  "Rebuild the current review buffer scoped to RELPATH (a normalized dir path)."
+  (unless (derived-mode-p 'review-mode)
+    (user-error "Not in a review buffer"))
+  (let ((root (or review--root
+                  (user-error "review-descend: buffer has no root"))))
+    (review--build-buffer root relpath)))
+
+(defun review-ascend ()
+  "Rebuild the current review buffer at the parent scope.  No-op at repo root."
+  (interactive)
+  (unless (derived-mode-p 'review-mode)
+    (user-error "Not in a review buffer"))
+  (let* ((scope (review--normalize-scope review--scope))
+         (parent (review--parent-scope scope)))
+    (if (and (string-empty-p scope))
+        (message "review: already at repo root")
+      (review--build-buffer review--root parent))))
 
 ;; --- Entry points ---
 
