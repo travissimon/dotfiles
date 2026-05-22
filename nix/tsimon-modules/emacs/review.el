@@ -53,5 +53,56 @@ like \"nix/tsimon-modules/emacs/\" for subdir-scoped reviews.")
 (defvar-local review--main-branch nil
   "Detected main branch name (e.g. \"main\" or \"master\").")
 
+;; --- Git helpers ---
+
+(defun review--git-lines-z (&rest args)
+  "Run `git ARGS' (which should include -z) in `default-directory'.
+Return a list of strings split on NUL.  Trailing empty element discarded."
+  (with-temp-buffer
+    (let ((exit (apply #'process-file "git" nil t nil args)))
+      (unless (zerop exit)
+        (error "git %s failed (exit %s): %s"
+               (mapconcat #'identity args " ")
+               exit
+               (buffer-string))))
+    (let* ((raw (buffer-string))
+           (parts (split-string raw "\0")))
+      ;; A trailing NUL produces an empty last element; drop it.
+      (if (and parts (string= (car (last parts)) ""))
+          (butlast parts)
+        parts))))
+
+(defun review--detect-main-branch ()
+  "Return the name of the main branch (\"main\", \"master\", or origin/HEAD target).
+Signal `user-error' if none can be found.  Must be called inside a git repo."
+  (let ((default-directory (or (magit-toplevel)
+                               (user-error "review: not inside a git repository"))))
+    (cond
+     ;; Local branch named main or master
+     ((zerop (process-file "git" nil nil nil
+                           "show-ref" "--verify" "--quiet" "refs/heads/main"))
+      "main")
+     ((zerop (process-file "git" nil nil nil
+                           "show-ref" "--verify" "--quiet" "refs/heads/master"))
+      "master")
+     ;; Remote tracking branch
+     ((zerop (process-file "git" nil nil nil
+                           "show-ref" "--verify" "--quiet" "refs/remotes/origin/main"))
+      "origin/main")
+     ((zerop (process-file "git" nil nil nil
+                           "show-ref" "--verify" "--quiet" "refs/remotes/origin/master"))
+      "origin/master")
+     ;; origin/HEAD fallback
+     (t
+      (let ((sym (with-temp-buffer
+                   (when (zerop (process-file "git" nil t nil
+                                              "symbolic-ref" "--short"
+                                              "refs/remotes/origin/HEAD"))
+                     (string-trim (buffer-string))))))
+        (if (and sym (not (string-empty-p sym)))
+            sym
+          (user-error
+           "review: cannot detect main branch (tried main, master, origin/HEAD)")))))))
+
 (provide 'review)
 ;;; review.el ends here
