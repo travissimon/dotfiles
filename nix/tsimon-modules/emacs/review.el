@@ -186,7 +186,7 @@ sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
     (setq header-line-format
           (format "review: %s%s  (vs %s)"
                   (abbreviate-file-name root)
-                  (if scope (concat scope) "")
+                  (or scope "")
                   main))
     (erase-buffer)
     (if (null entries)
