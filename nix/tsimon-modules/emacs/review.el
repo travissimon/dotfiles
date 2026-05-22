@@ -104,5 +104,49 @@ Signal `user-error' if none can be found.  Must be called inside a git repo."
           (user-error
            "review: cannot detect main branch (tried main, master, origin/HEAD)")))))))
 
+;; --- Data layer ---
+
+(defconst review--bit-staged 1)
+(defconst review--bit-unstaged 2)
+(defconst review--bit-committed 4)
+
+(defun review--collect-files (root scope main-branch)
+  "Collect changed files under ROOT, scoped to SCOPE relative path or nil.
+MAIN-BRANCH is the branch name to compare HEAD against for committed state.
+Return a list of (RELATIVE-PATH . BITMASK) sorted alphabetically.
+
+BITMASK uses `review--bit-staged' (1), `review--bit-unstaged' (2),
+`review--bit-committed' (4)."
+  (let* ((default-directory root)
+         (pathspec-args (when (and scope (not (string-empty-p scope)))
+                          (list "--" scope)))
+         (table (make-hash-table :test 'equal)))
+    (cl-labels ((mark (path bit)
+                  (puthash path (logior bit (gethash path table 0)) table)))
+      ;; Staged: git diff --cached --name-only -z -M
+      (dolist (p (apply #'review--git-lines-z
+                        (append (list "diff" "--cached" "--name-only" "-z" "-M")
+                                pathspec-args)))
+        (mark p review--bit-staged))
+      ;; Unstaged: git diff --name-only -z -M
+      (dolist (p (apply #'review--git-lines-z
+                        (append (list "diff" "--name-only" "-z" "-M")
+                                pathspec-args)))
+        (mark p review--bit-unstaged))
+      ;; Untracked (also U): git ls-files --others --exclude-standard -z
+      (dolist (p (apply #'review--git-lines-z
+                        (append (list "ls-files" "--others" "--exclude-standard" "-z")
+                                pathspec-args)))
+        (mark p review--bit-unstaged))
+      ;; Committed not on main: git diff --name-only -z -M <main>..HEAD
+      (dolist (p (apply #'review--git-lines-z
+                        (append (list "diff" "--name-only" "-z" "-M"
+                                      (concat main-branch "..HEAD"))
+                                pathspec-args)))
+        (mark p review--bit-committed)))
+    (let (result)
+      (maphash (lambda (path bits) (push (cons path bits) result)) table)
+      (sort result (lambda (a b) (string< (car a) (car b)))))))
+
 (provide 'review)
 ;;; review.el ends here
