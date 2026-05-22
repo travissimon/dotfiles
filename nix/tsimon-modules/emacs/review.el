@@ -1,9 +1,10 @@
 ;;; review.el --- Dired-like listing of git-changed files -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; Major mode showing a flat recursive listing of files in the current git
-;; repository with any of three states: staged (S), unstaged or untracked
-;; (U), and committed-but-not-on-main (C).
+;; Major mode showing a flat recursive listing of all files in the current
+;; git repository (similar to dired, but flat and rooted at the repo).
+;; Each file is annotated with any of three states it is in: staged (S),
+;; unstaged or untracked (U), and committed-but-not-on-main (C).
 ;;
 ;; Entry points:
 ;;   M-x review          - listing rooted at the repo's git toplevel
@@ -12,7 +13,8 @@
 ;;                         buffer visits a file
 ;;
 ;; Pressing RET on a file opens it via `magit-diff-review-open' with the
-;; auto-detected main branch as the comparison revision.
+;; auto-detected main branch as the comparison revision.  C-o opens the
+;; file with plain `find-file' (no diff/review wrapper).
 
 ;;; Code:
 
@@ -111,9 +113,10 @@ Signal `user-error' if none can be found.  Must be called inside a git repo."
 (defconst review--bit-committed 4)
 
 (defun review--collect-files (root scope main-branch)
-  "Collect changed files under ROOT, scoped to SCOPE relative path or nil.
+  "Collect all files under ROOT, scoped to SCOPE relative path or nil.
 MAIN-BRANCH is the branch name to compare HEAD against for committed state.
-Return a list of (RELATIVE-PATH . BITMASK) sorted alphabetically.
+Return a list of (RELATIVE-PATH . BITMASK) sorted alphabetically.  Unchanged
+files have BITMASK 0; files with changes set one or more of the bits below.
 
 BITMASK uses `review--bit-staged' (1), `review--bit-unstaged' (2),
 `review--bit-committed' (4)."
@@ -125,6 +128,11 @@ BITMASK uses `review--bit-staged' (1), `review--bit-unstaged' (2),
          (table (make-hash-table :test 'equal)))
     (cl-labels ((mark (path bit)
                   (puthash path (logior bit (gethash path table 0)) table)))
+      ;; All tracked files (seeded with bitmask 0; diff loops below add bits)
+      (dolist (p (apply #'review--git-lines-z
+                        (append (list "ls-files" "-z")
+                                pathspec-args)))
+        (mark p 0))
       ;; Staged: git diff --cached --name-only -z -M
       (dolist (p (apply #'review--git-lines-z
                         (append (list "diff" "--cached" "--name-only" "-z" "-M")
@@ -150,11 +158,78 @@ BITMASK uses `review--bit-staged' (1), `review--bit-unstaged' (2),
       (maphash (lambda (path bits) (push (cons path bits) result)) table)
       (sort result (lambda (a b) (string< (car a) (car b)))))))
 
+;; --- Scope and aggregation helpers ---
+
+(defun review--normalize-scope (scope)
+  "Normalize SCOPE to either \"\" (repo root) or \"sub/dir/\" (trailing slash).
+Accepts nil, \"\", \".\", \"./\", or any repo-relative directory path."
+  (cond
+   ((null scope) "")
+   ((member scope '("" "." "./")) "")
+   ((string-suffix-p "/" scope) scope)
+   (t (concat scope "/"))))
+
+(defun review--parent-scope (scope)
+  "Return the parent of normalized SCOPE.
+\"\" stays \"\"; \"a/\" → \"\"; \"a/b/\" → \"a/\"."
+  (let ((s (review--normalize-scope scope)))
+    (if (string-empty-p s)
+        ""
+      (let* ((trimmed (substring s 0 -1))
+             (slash (cl-position ?/ trimmed :from-end t)))
+        (if slash
+            (substring s 0 (1+ slash))
+          "")))))
+
+(defun review--aggregate-entries (entries scope)
+  "Fold ENTRIES (a list of (RELPATH . BITS)) into one-level entries under SCOPE.
+SCOPE must be normalized (\"\" or \"sub/dir/\").  Returns a list of plists
+sorted directories-first then alphabetically:
+
+  (:kind file :name BASENAME :bits BITS :relpath RELPATH)
+  (:kind dir  :name \"NAME/\" :bits BITS :relpath \"SCOPE+NAME/\")
+
+A directory's BITS is the bitwise-OR of all descendant files' BITS."
+  (let ((prefix-len (length scope))
+        (files nil)
+        (dirs (make-hash-table :test 'equal)))
+    (dolist (cell entries)
+      (let ((relpath (car cell))
+            (bits (cdr cell)))
+        (when (string-prefix-p scope relpath)
+          (let* ((rest (substring relpath prefix-len))
+                 (slash (cl-position ?/ rest)))
+            (if (null slash)
+                (push (list :kind 'file
+                            :name rest
+                            :bits bits
+                            :relpath relpath)
+                      files)
+              (let* ((dirname (substring rest 0 slash))
+                     (existing (gethash dirname dirs 0)))
+                (puthash dirname (logior existing bits) dirs)))))))
+    (let (dir-entries)
+      (maphash (lambda (name bits)
+                 (push (list :kind 'dir
+                             :name (concat name "/")
+                             :bits bits
+                             :relpath (concat scope name "/"))
+                       dir-entries))
+               dirs)
+      (append
+       (sort dir-entries
+             (lambda (a b) (string< (plist-get a :name)
+                                    (plist-get b :name))))
+       (sort files
+             (lambda (a b) (string< (plist-get a :name)
+                                    (plist-get b :name))))))))
+
 ;; --- Rendering ---
 
 (defun review--face-for-bitmask (bits)
-  "Return the face symbol matching state BITS (1=S, 2=U, 4=C)."
+  "Return the face symbol matching state BITS (0=unchanged, 1=S, 2=U, 4=C)."
   (pcase bits
+    (0 'default)
     (1 'review-staged-face)
     (2 'review-unstaged-face)
     (4 'review-committed-face)
@@ -192,7 +267,7 @@ sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
                   main))
     (erase-buffer)
     (if (null entries)
-        (insert "  (no changes)\n")
+        (insert "  (no files)\n")
       (dolist (e entries)
         (insert (review--format-line (car e) (cdr e)))))
     (goto-char (point-min))))
@@ -203,6 +278,7 @@ sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "RET")     #'review-visit-file)
     (define-key map (kbd "<mouse-2>") #'review-visit-file)
+    (define-key map (kbd "C-o")     #'review-find-file)
     (define-key map (kbd "n")       #'review-next-file)
     (define-key map (kbd "p")       #'review-prev-file)
     (define-key map (kbd "g")       #'review-refresh)
@@ -252,6 +328,21 @@ If the file no longer exists on disk (deleted), message and decline."
                      relpath)
           (let ((default-directory root))
             (magit-diff-review-open relpath main))))))))
+
+(defun review-find-file ()
+  "Open the file at point with `find-file' (no diff/review wrapper)."
+  (interactive)
+  (let ((relpath (review--line-file)))
+    (cond
+     ((null relpath)
+      (message "No file at point"))
+     (t
+      (let* ((root (or review--root
+                       (user-error "review: buffer has no root")))
+             (abs  (expand-file-name relpath root)))
+        (if (not (file-exists-p abs))
+            (message "review: %s does not exist on disk" relpath)
+          (find-file abs)))))))
 
 ;; --- Navigation and refresh ---
 
