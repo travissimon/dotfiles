@@ -148,5 +148,52 @@ BITMASK uses `review--bit-staged' (1), `review--bit-unstaged' (2),
       (maphash (lambda (path bits) (push (cons path bits) result)) table)
       (sort result (lambda (a b) (string< (car a) (car b)))))))
 
+;; --- Rendering ---
+
+(defun review--face-for-bitmask (bits)
+  "Return the face symbol matching state BITS (1=S, 2=U, 4=C)."
+  (pcase bits
+    (1 'review-staged-face)
+    (2 'review-unstaged-face)
+    (4 'review-committed-face)
+    (_ 'review-mixed-face)))
+
+(defun review--format-line (relpath bits)
+  "Return a propertized string for one file line: `  S U C   RELPATH\\n'."
+  (let* ((s (if (zerop (logand bits review--bit-staged))    ?\s ?S))
+         (u (if (zerop (logand bits review--bit-unstaged))  ?\s ?U))
+         (c (if (zerop (logand bits review--bit-committed)) ?\s ?C))
+         (face (review--face-for-bitmask bits))
+         (prefix (format "  %c %c %c   " s u c))
+         (path (propertize relpath
+                           'face face
+                           'mouse-face 'highlight
+                           'review-file relpath)))
+    (concat prefix path "\n")))
+
+(defun review--build-buffer (root scope)
+  "Populate the current buffer with a review listing for ROOT, SCOPE.
+Sets buffer-locals, switches to `review-mode' if not already, and
+sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
+  (let* ((main (review--detect-main-branch))
+         (entries (review--collect-files root scope main))
+         (inhibit-read-only t))
+    (unless (derived-mode-p 'review-mode)
+      (review-mode))
+    (setq review--root root
+          review--scope scope
+          review--main-branch main)
+    (setq header-line-format
+          (format "review: %s%s  (vs %s)"
+                  (abbreviate-file-name root)
+                  (if scope (concat scope) "")
+                  main))
+    (erase-buffer)
+    (if (null entries)
+        (insert "  (no changes)\n")
+      (dolist (e entries)
+        (insert (review--format-line (car e) (cdr e)))))
+    (goto-char (point-min))))
+
 (provide 'review)
 ;;; review.el ends here
