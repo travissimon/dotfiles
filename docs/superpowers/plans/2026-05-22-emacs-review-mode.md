@@ -684,6 +684,9 @@ Insert before the `(provide 'review)` line:
       (if (review--line-file)
           (setq found t)
         (forward-line direction)))
+    ;; bobp may have fired before line 1 was tested; check the current line.
+    (when (and (not found) (review--line-file))
+      (setq found t))
     (if found
         (goto-char (+ (line-beginning-position) review--path-column))
       (goto-char start)
