@@ -195,5 +195,31 @@ sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
         (insert (review--format-line (car e) (cdr e)))))
     (goto-char (point-min))))
 
+;; --- Major mode ---
+
+(defvar review-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "RET")     #'review-visit-file)
+    (define-key map (kbd "<mouse-2>") #'review-visit-file)
+    (define-key map (kbd "n")       #'review-next-file)
+    (define-key map (kbd "p")       #'review-prev-file)
+    (define-key map (kbd "g")       #'review-refresh)
+    (define-key map (kbd "q")       #'quit-window)
+    map)
+  "Keymap for `review-mode'.")
+
+(define-derived-mode review-mode special-mode "Review"
+  "Major mode for the dired-like review listing.
+
+\\{review-mode-map}"
+  (setq buffer-read-only t)
+  (setq truncate-lines t))
+
+;; Forward declarations — implemented in later sections.
+(declare-function review-visit-file "review")
+(declare-function review-next-file "review")
+(declare-function review-prev-file "review")
+(declare-function review-refresh "review")
+
 (provide 'review)
 ;;; review.el ends here
