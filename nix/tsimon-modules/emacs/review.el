@@ -267,8 +267,9 @@ Parent rows (:kind parent) have blank status columns."
   "Populate the current buffer with a single-level review listing for ROOT, SCOPE.
 SCOPE is normalized to \"\" or \"sub/dir/\".  Sets buffer-locals, switches to
 `review-mode' if not already, sets `header-line-format', and renames the
-buffer to reflect the current scope.  Caller must `pop-to-buffer' afterwards
-(only required for the first display; descend/ascend rebuild in place)."
+buffer to reflect the current scope.  Does not switch to or display the
+buffer; callers creating a fresh buffer (`review', `review-current') must
+`pop-to-buffer' afterwards.  Rescoping via descend/ascend rebuilds in place."
   (let* ((scope (review--normalize-scope scope))
          (main (review--detect-main-branch))
          (all-entries (review--collect-files root scope main))
@@ -446,7 +447,7 @@ File entries open with `find-file'; directory entries open in dired."
     (user-error "Not in a review buffer"))
   (let* ((scope (review--normalize-scope review--scope))
          (parent (review--parent-scope scope)))
-    (if (and (string-empty-p scope))
+    (if (string-empty-p scope)
         (message "review: already at repo root")
       (review--build-buffer review--root parent))))
 
