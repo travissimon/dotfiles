@@ -300,5 +300,59 @@ If the file no longer exists on disk (deleted), message and decline."
           (goto-char (point-min))
         (goto-char (+ (line-beginning-position) review--path-column))))))
 
+;; --- Entry points ---
+
+(defun review--bitmask-for-file (root relpath main-branch)
+  "Compute the state bitmask for the single file RELPATH under ROOT.
+Calls `review--collect-files' scoped to that exact path."
+  (or (cdr (assoc relpath
+                  (review--collect-files root relpath main-branch)))
+      0))
+
+(defun review ()
+  "Open a review buffer rooted at the current repo's git toplevel."
+  (interactive)
+  (let ((root (or (magit-toplevel)
+                  (user-error "review: not inside a git repository"))))
+    (let ((buf (get-buffer-create
+                (format "*review: %s*" (abbreviate-file-name root)))))
+      (with-current-buffer buf
+        (review--build-buffer root nil))
+      (pop-to-buffer buf))))
+
+(defun review-current ()
+  "Review the current directory's changes, or the current file's diff.
+
+If the current buffer visits a file:
+  - if the file has changes vs main/index/working-tree, open it in
+    `magit-diff-review-mode' directly;
+  - if the file has no changes, fall back to `find-file' (open normally).
+Otherwise, open a review buffer scoped to `default-directory'."
+  (interactive)
+  (let ((file (buffer-file-name)))
+    (cond
+     (file
+      (let* ((default-directory (file-name-directory file))
+             (root (or (magit-toplevel)
+                       (user-error "review-current: file not in a git repository")))
+             (main (review--detect-main-branch))
+             (relpath (file-relative-name file root))
+             (bits (review--bitmask-for-file root relpath main)))
+        (if (zerop bits)
+            (progn
+              (message "review-current: no changes — opening normally")
+              (find-file file))
+          (let ((default-directory root))
+            (magit-diff-review-open relpath main)))))
+     (t
+      (let* ((root (or (magit-toplevel)
+                       (user-error "review-current: not in a git repository")))
+             (scope (file-relative-name default-directory root))
+             (buf (get-buffer-create
+                   (format "*review: %s*" (abbreviate-file-name default-directory)))))
+        (with-current-buffer buf
+          (review--build-buffer root scope))
+        (pop-to-buffer buf))))))
+
 (provide 'review)
 ;;; review.el ends here
