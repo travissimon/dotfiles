@@ -215,11 +215,6 @@ sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
   (setq buffer-read-only t)
   (setq truncate-lines t))
 
-;; Forward declarations — implemented in later sections.
-(declare-function review-next-file "review")
-(declare-function review-prev-file "review")
-(declare-function review-refresh "review")
-
 ;; --- Line-level helpers ---
 
 (defconst review--path-column 10
@@ -255,6 +250,52 @@ If the file no longer exists on disk (deleted), message and decline."
                      relpath)
           (let ((default-directory root))
             (magit-diff-review-open relpath main))))))))
+
+;; --- Navigation and refresh ---
+
+(defun review--goto-file-line-direction (direction)
+  "Move point to the next file line in DIRECTION (+1 or -1)."
+  (let ((start (point))
+        (found nil))
+    (forward-line direction)
+    (while (and (not found)
+                (not (if (> direction 0) (eobp) (bobp))))
+      (if (review--line-file)
+          (setq found t)
+        (forward-line direction)))
+    (if found
+        (goto-char (+ (line-beginning-position) review--path-column))
+      (goto-char start)
+      (message "No more files"))))
+
+(defun review-next-file ()
+  "Move point to the next file line."
+  (interactive)
+  (review--goto-file-line-direction 1))
+
+(defun review-prev-file ()
+  "Move point to the previous file line."
+  (interactive)
+  (review--goto-file-line-direction -1))
+
+(defun review-refresh ()
+  "Rebuild the review buffer in place.  Tries to preserve point on the same file."
+  (interactive)
+  (unless (derived-mode-p 'review-mode)
+    (user-error "Not in a review buffer"))
+  (let* ((current-file (review--line-file))
+         (root review--root)
+         (scope review--scope))
+    (unless root (user-error "review-refresh: buffer has no root"))
+    (review--build-buffer root scope)
+    (when current-file
+      (goto-char (point-min))
+      (while (and (not (eobp))
+                  (not (equal current-file (review--line-file))))
+        (forward-line 1))
+      (if (eobp)
+          (goto-char (point-min))
+        (goto-char (+ (line-beginning-position) review--path-column))))))
 
 (provide 'review)
 ;;; review.el ends here
