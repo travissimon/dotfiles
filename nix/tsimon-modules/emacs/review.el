@@ -245,7 +245,7 @@ A directory's BITS is the bitwise-OR of all descendant files' BITS."
          (path (propertize relpath
                            'face face
                            'mouse-face 'highlight
-                           'review-file relpath)))
+                           'review-entry (cons 'file relpath))))
     (concat prefix path "\n")))
 
 (defun review--build-buffer (root scope)
@@ -300,12 +300,12 @@ sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
 Matches the 10-char prefix produced by `review--format-line':
 2 indent + 3 status chars + 2 separators + 3 trailing spaces.")
 
-(defun review--line-file ()
-  "Return the `review-file' text property at the path column of the current line,
-or nil if not on a file line."
+(defun review--line-entry ()
+  "Return the entry cons (KIND . RELPATH) at the path column of the current line,
+or nil if not on an entry line.  KIND is `file', `dir', or `parent'."
   (let ((col-pos (+ (line-beginning-position) review--path-column)))
     (and (<= col-pos (line-end-position))
-         (get-text-property col-pos 'review-file))))
+         (get-text-property col-pos 'review-entry))))
 
 ;; --- RET handler ---
 
@@ -313,7 +313,8 @@ or nil if not on a file line."
   "Open the file at point via `magit-diff-review-open' against the main branch.
 If the file no longer exists on disk (deleted), message and decline."
   (interactive)
-  (let ((relpath (review--line-file)))
+  (let* ((entry (review--line-entry))
+         (relpath (and entry (eq (car entry) 'file) (cdr entry))))
     (cond
      ((null relpath)
       (message "No file at point"))
@@ -332,10 +333,11 @@ If the file no longer exists on disk (deleted), message and decline."
 (defun review-find-file ()
   "Open the file at point with `find-file' (no diff/review wrapper)."
   (interactive)
-  (let ((relpath (review--line-file)))
+  (let* ((entry (review--line-entry))
+         (relpath (and entry (cdr entry))))
     (cond
      ((null relpath)
-      (message "No file at point"))
+      (message "No entry at point"))
      (t
       (let* ((root (or review--root
                        (user-error "review: buffer has no root")))
@@ -347,22 +349,21 @@ If the file no longer exists on disk (deleted), message and decline."
 ;; --- Navigation and refresh ---
 
 (defun review--goto-file-line-direction (direction)
-  "Move point to the next file line in DIRECTION (+1 or -1)."
+  "Move point to the next entry line in DIRECTION (+1 or -1)."
   (let ((start (point))
         (found nil))
     (forward-line direction)
     (while (and (not found)
                 (not (if (> direction 0) (eobp) (bobp))))
-      (if (review--line-file)
+      (if (review--line-entry)
           (setq found t)
         (forward-line direction)))
-    ;; bobp may have fired before line 1 was tested; check the current line.
-    (when (and (not found) (review--line-file))
+    (when (and (not found) (review--line-entry))
       (setq found t))
     (if found
         (goto-char (+ (line-beginning-position) review--path-column))
       (goto-char start)
-      (message "No more files"))))
+      (message "No more entries"))))
 
 (defun review-next-file ()
   "Move point to the next file line."
@@ -375,19 +376,19 @@ If the file no longer exists on disk (deleted), message and decline."
   (review--goto-file-line-direction -1))
 
 (defun review-refresh ()
-  "Rebuild the review buffer in place.  Tries to preserve point on the same file."
+  "Rebuild the review buffer in place.  Tries to preserve point on the same entry."
   (interactive)
   (unless (derived-mode-p 'review-mode)
     (user-error "Not in a review buffer"))
-  (let* ((current-file (review--line-file))
+  (let* ((current-entry (review--line-entry))
          (root review--root)
          (scope review--scope))
     (unless root (user-error "review-refresh: buffer has no root"))
     (review--build-buffer root scope)
-    (when current-file
+    (when current-entry
       (goto-char (point-min))
       (while (and (not (eobp))
-                  (not (equal current-file (review--line-file))))
+                  (not (equal current-entry (review--line-entry))))
         (forward-line 1))
       (if (eobp)
           (goto-char (point-min))
