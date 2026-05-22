@@ -76,6 +76,9 @@
 ;; custom magit diff review mode
 (load "/home/tsimon/.emacs.d/config/magit-diff-review.el")
 
+;; review mode (M-x review / M-x review-current)
+(load "/home/tsimon/.emacs.d/config/review.el")
+
 ;; editor config
 (use-package editorconfig
   :config (editorconfig-mode 1))

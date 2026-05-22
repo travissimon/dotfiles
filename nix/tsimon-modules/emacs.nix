@@ -64,6 +64,9 @@
     file.".emacs.d/config/magit-diff-review.el" = {
       source = ./emacs/magit-diff-review.el;
     };
+    file.".emacs.d/config/review.el" = {
+      source = ./emacs/review.el;
+    };
 
   };
 
