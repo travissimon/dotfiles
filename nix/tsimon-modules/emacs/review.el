@@ -216,10 +216,45 @@ sets `header-line-format'.  Caller must `pop-to-buffer' afterwards."
   (setq truncate-lines t))
 
 ;; Forward declarations — implemented in later sections.
-(declare-function review-visit-file "review")
 (declare-function review-next-file "review")
 (declare-function review-prev-file "review")
 (declare-function review-refresh "review")
+
+;; --- Line-level helpers ---
+
+(defconst review--path-column 10
+  "Column at which the file path begins on each file line.
+Matches the 10-char prefix produced by `review--format-line':
+2 indent + 3 status chars + 2 separators + 3 trailing spaces.")
+
+(defun review--line-file ()
+  "Return the `review-file' text property at the path column of the current line,
+or nil if not on a file line."
+  (let ((col-pos (+ (line-beginning-position) review--path-column)))
+    (and (<= col-pos (line-end-position))
+         (get-text-property col-pos 'review-file))))
+
+;; --- RET handler ---
+
+(defun review-visit-file ()
+  "Open the file at point via `magit-diff-review-open' against the main branch.
+If the file no longer exists on disk (deleted), message and decline."
+  (interactive)
+  (let ((relpath (review--line-file)))
+    (cond
+     ((null relpath)
+      (message "No file at point"))
+     (t
+      (let* ((root (or review--root
+                       (user-error "review: buffer has no root")))
+             (main (or review--main-branch
+                       (user-error "review: buffer has no main-branch")))
+             (abs  (expand-file-name relpath root)))
+        (if (not (file-exists-p abs))
+            (message "review: %s is deleted — use magit-status to view the deletion"
+                     relpath)
+          (let ((default-directory root))
+            (magit-diff-review-open relpath main))))))))
 
 (provide 'review)
 ;;; review.el ends here
