@@ -118,7 +118,9 @@ Return a list of (RELATIVE-PATH . BITMASK) sorted alphabetically.
 BITMASK uses `review--bit-staged' (1), `review--bit-unstaged' (2),
 `review--bit-committed' (4)."
   (let* ((default-directory root)
-         (pathspec-args (when (and scope (not (string-empty-p scope)))
+         (pathspec-args (when (and scope
+                                   (not (string-empty-p scope))
+                                   (not (string= scope ".")))
                           (list "--" scope)))
          (table (make-hash-table :test 'equal)))
     (cl-labels ((mark (path bit)
