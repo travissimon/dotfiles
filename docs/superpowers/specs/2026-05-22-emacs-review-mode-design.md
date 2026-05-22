@@ -39,15 +39,23 @@ The detected branch name is used in:
 
 Per file under the review root, compute a bitmask of three independent booleans:
 
-| Bit | Source command                                                               |
-|-----|------------------------------------------------------------------------------|
-| S   | `git diff --cached --name-only -- <root>`                                    |
-| U   | `git diff --name-only -- <root>` **∪** `git ls-files --others --exclude-standard -- <root>` |
-| C   | `git diff --name-only <main>..HEAD -- <root>`                                |
+| Bit | Source command                                                                                  |
+|-----|-------------------------------------------------------------------------------------------------|
+| S   | `git diff --cached --name-only -z -M -- <scope-pathspec>`                                       |
+| U   | `git diff --name-only -z -M -- <scope-pathspec>` **∪** `git ls-files --others --exclude-standard -z -- <scope-pathspec>` |
+| C   | `git diff --name-only -z -M <main>..HEAD -- <scope-pathspec>`                                   |
 
 A file appears in the listing iff any bit is set.
 
-Untracked files count as U (unstaged). Rationale: otherwise newly-added files don't appear in a review at all, which would be a serious blind spot.
+**Path safety (`-z`):** All four git commands use `-z` to produce NUL-terminated output. The Elisp side splits on `\0` (not `\n`) and never interprets `core.quotePath` C-escapes. This handles paths with spaces, tabs, embedded newlines, and non-ASCII characters correctly.
+
+**Pathspec scoping:** `<scope-pathspec>` is the **relative path from the git root** to the scope directory (e.g., `nix/tsimon-modules/emacs/`), not an absolute path. When the scope equals the git root, the `-- <scope-pathspec>` clause is omitted entirely (passing `.` or empty has subtle quirks across git versions).
+
+**Untracked files** count as U (unstaged). Rationale: otherwise newly-added files don't appear in a review at all, which would be a serious blind spot.
+
+**Renames** are reported as a single line, using their **new path**. The `-M` flag enables rename detection on all three diff commands; with `--name-only -M`, renamed files appear once under the new name rather than as separate delete+add entries. (Untracked listing is unaffected — there are no renames there.)
+
+**Deleted files** appear in the listing — they are real changes worth reviewing. The bitmask captures *where* the deletion lives (working tree → U, index → S, on this branch's commits → C). Their RET behavior is special-cased; see [File visit](#file-visit-ret-handler) below.
 
 ## Faces
 
@@ -66,10 +74,11 @@ The faces are independent `defface`s even though committed and mixed share a def
 
 Buffer name: `*review: <abbreviated-root>*` (or `*review: <subdir>*` for the subtree case).
 
-Header line (rendered as the first lines of the buffer, not the `header-line-format`):
-```
-*review: ~/dotfiles/  (vs main)*
+**Header** is rendered via `header-line-format` (the persistent window header that stays visible during scrolling), not as buffer body text. This matches the dired/magit convention and keeps context visible no matter how far the user scrolls.
 
+Header content (single line):
+```
+review: ~/dotfiles/  (vs main)
 ```
 
 Each file line is exactly 10 characters wide before the path begins:
@@ -123,7 +132,7 @@ All other printable-character keys inherit `special-mode`'s default (no self-ins
 
 1. Find git root via `(magit-toplevel)`. If nil, signal `user-error "review: not inside a git repository"`.
 2. Open/reuse buffer `*review: <abbreviated-root>*` rooted at that directory.
-3. Populate via `review--build-buffer ROOT ROOT` (review-root and listing-scope are the same).
+3. Populate via `(review--build-buffer ROOT nil)` — scope=nil means whole-repo (no pathspec restriction).
 4. `pop-to-buffer` it.
 
 ### `(defun review-current () (interactive) ...)`
@@ -131,24 +140,28 @@ All other printable-character keys inherit `special-mode`'s default (no self-ins
 Branch on `(buffer-file-name)`:
 
 - **Buffer visits a file:**
-  1. Verify the file is inside a git repo (`magit-toplevel` from the file's directory).
+  1. Verify the file is inside a git repo (`magit-toplevel` from the file's directory). Error if not.
   2. Detect main branch.
-  3. Call `(magit-diff-review-open <relative-path-from-toplevel> <main-branch>)`. The review listing is skipped entirely.
+  3. Compute the file's bitmask (same logic as `review--collect-files`, but for the single file).
+  4. **If bitmask is 0 (no changes vs main, index, or working tree):** call `find-file` on the absolute path — open the file normally. Message: `"review-current: no changes — opening normally"`.
+  5. **Otherwise:** call `(magit-diff-review-open <relative-path-from-toplevel> <main-branch>)`. The review listing is skipped entirely.
 
 - **Buffer does NOT visit a file** (e.g., dired, eshell, scratch):
   1. Use `default-directory` as the listing scope.
   2. Find git root via `magit-toplevel`. Error if not in a git repo.
-  3. Open buffer `*review: <abbreviated-default-directory>*`.
-  4. Populate via `review--build-buffer GIT-ROOT DEFAULT-DIRECTORY` — the git commands are scoped via `-- <default-directory>` so only files under that subtree appear.
-  5. `pop-to-buffer` it.
+  3. Compute the scope-pathspec = `(file-relative-name default-directory git-root)`.
+  4. Open buffer `*review: <abbreviated-default-directory>*`.
+  5. Populate via `review--build-buffer GIT-ROOT SCOPE-PATHSPEC` — the git commands use the relative pathspec so only files under that subtree appear.
+  6. `pop-to-buffer` it.
 
 ## File visit (RET handler)
 
 `review-visit-file` reads the `'review-file` text property at point. If non-nil:
-1. Compute the file path relative to `magit-toplevel`.
-2. Call `(magit-diff-review-open RELATIVE-PATH MAIN-BRANCH)`.
+1. Compute the file path relative to `magit-toplevel` (`review--root` is available as a buffer-local).
+2. **If the file does not exist on disk** (deleted in working tree): message `"review: %s is deleted — use magit-status to view the deletion"` and do **not** open anything. Rationale: `magit-diff-review-open` calls `insert-file-contents` for its "normal view" toggle and would fail on a missing file. Handling deleted files properly would require modifying `magit-diff-review.el`, which is out of scope for this spec.
+3. **Otherwise:** call `(magit-diff-review-open RELATIVE-PATH MAIN-BRANCH)`.
 
-If nil (point is on the header or empty-state line), do nothing (or message "No file at point").
+If the `'review-file` property is nil (point is on the empty-state line `(no changes)`), message `"No file at point"` and do nothing.
 
 The main branch is captured as a buffer-local variable `review--main-branch` at buffer construction time, so RET doesn't have to re-detect it each time.
 
@@ -156,27 +169,39 @@ The main branch is captured as a buffer-local variable `review--main-branch` at 
 
 ```elisp
 (defvar-local review--root nil
-  "Git root for this review buffer.")
+  "Absolute path of the git root for this review buffer (trailing slash).")
 
 (defvar-local review--scope nil
-  "Listing scope (subdir under root) for this review buffer.")
+  "Listing scope: nil for whole-repo, or a repo-relative path string
+   like \"nix/tsimon-modules/emacs/\" for subdir-scoped reviews.")
 
 (defvar-local review--main-branch nil
   "Detected main branch name (e.g. \"main\" or \"master\").")
 
-(defun review--detect-main-branch () ...)
+(defun review--detect-main-branch ()
   ;; Returns string or signals user-error.
+  )
+
+(defun review--git-lines-z (&rest args)
+  ;; Run `git ARGS...` (which must include `-z`), return list of strings split on \0.
+  ;; Empty trailing element from terminal NUL is discarded.
+  )
 
 (defun review--collect-files (root scope main-branch)
-  ;; Returns list of (RELATIVE-PATH . BITMASK) sorted by path.
-  ;; BITMASK is an integer: 1=S, 2=U, 4=C.
+  ;; Runs the four git commands with -z and -M, unions their outputs into a
+  ;; hash mapping relative-path -> bitmask (1=S, 2=U, 4=C).
+  ;; Returns the entries as a sorted list of (RELATIVE-PATH . BITMASK).
+  )
 
-(defun review--face-for-bitmask (bitmask) ...)
-  ;; Returns one of the 4 face symbols.
+(defun review--face-for-bitmask (bitmask)
+  ;; Returns one of the 4 face symbols based on which bits are set.
+  )
 
-(defun review--build-buffer (root scope) ...)
-  ;; Erases current buffer, sets buffer-locals, inserts header + lines.
-  ;; Caller is responsible for putting the right buffer current.
+(defun review--build-buffer (root scope)
+  ;; Detects main branch, runs review--collect-files, switches to review-mode
+  ;; if not already, sets buffer-locals and header-line-format, inserts the
+  ;; file lines into the body. Caller is responsible for `pop-to-buffer`.
+  )
 ```
 
 ## Error handling
@@ -210,11 +235,19 @@ Manual testing in a scratch git repo with a mix of file states:
 4. Make an unstaged edit to another file (→ U state).
 5. Add an untracked file (→ U state via untracked).
 6. Create combinations: same file with both staged and unstaged edits (SU), staged edit to a committed file (SC), etc.
-7. Verify:
+7. **Edge cases:**
+   - File with a space in its name, a tab, and a non-ASCII char (verify `-z` parsing)
+   - Rename a file in a commit (`git mv`); verify it shows as one line under the new name
+   - Working-tree-deleted file (`rm`); verify it appears in listing and RET shows the "deleted" message
+   - Staged-deletion (`git rm --cached` or `git rm`); same
+   - File with no changes at all when running `review-current` on it (verify `find-file` is called)
+8. Verify:
    - `M-x review` shows all 7 possible bitmask combinations correctly colored
    - `M-x review-current` from inside a subdir filters to that subtree
-   - `M-x review-current` from a file buffer opens magit-diff-review directly
+   - `M-x review-current` from a file buffer with changes opens magit-diff-review directly
+   - `M-x review-current` from a file buffer with no changes opens via `find-file`
    - RET on each file opens the correct diff against main
+   - RET on a deleted file shows the "deleted" message and does not error
    - `g` refreshes after external git operations
    - Behavior outside a git repo errors cleanly
    - Behavior on the default branch (where no `<main>..HEAD` commits exist) is sane (just shows S/U files)
