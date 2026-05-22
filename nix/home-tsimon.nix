@@ -21,6 +21,7 @@
     packages = with pkgs; [
       angular-language-server
       bat
+      beam28Packages.elixir
       beam28Packages.elixir-ls
       bluez
       bluez-tools
@@ -47,7 +48,6 @@
       libgtop
       libsoup_3
       lsd
-      nodePackages.nodejs
       nvd
       parallel
       python3

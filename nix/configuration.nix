@@ -83,6 +83,7 @@
   };
 
   hardware = {
+    rtl-sdr.enable = true;
     sane = {
       enable = true;
       extraBackends = [ pkgs.hplipWithPlugin ];
@@ -99,6 +100,15 @@
     udev.packages = [
       pkgs.openrgb-with-all-plugins
     ];
+
+    # VKB Sim HOTAS — grants the active local user access to VKB devices
+    # (vendor id 231d) so VKB SST can read/write the hardware under
+    # Wine/Proton. `uaccess` routes permission through systemd-logind
+    # rather than making the device world-writable.
+    udev.extraRules = ''
+      SUBSYSTEM=="usb", ATTRS{idVendor}=="231d", TAG+="uaccess"
+      KERNEL=="hidraw*", ATTRS{idVendor}=="231d", TAG+="uaccess"
+    '';
 
     hardware = {
       openrgb.enable = true;
@@ -157,7 +167,7 @@
     tsimon = {
       isNormalUser = true;
       description = "Travis Simon";
-      extraGroups = [ "wheel" "audio" "scanner" "lp" "docker" ];
+      extraGroups = [ "wheel" "audio" "scanner" "lp" "docker" "plugdev" ];
     };
   };
 
@@ -183,14 +193,35 @@
     nix-ld = {
       enable = true;
       libraries = with pkgs; [
-        fontconfig
-        wayland
-        libGL
         alsa-lib
-        vulkan-loader
+        at-spi2-atk
+        cairo
+        cups
+        dbus
+        expat
+        fontconfig
+        glib
+        gtk3
+        libdrm
+        libGL
         libpulseaudio
+        libxkbcommon
+        libgbm
+        mesa
+        nspr
+        nss
+        pango
         speechd-minimal
         udev
+        vulkan-loader
+        wayland
+        xorg.libX11
+        xorg.libXcomposite
+        xorg.libXdamage
+        xorg.libXext
+        xorg.libXfixes
+        xorg.libXrandr
+        xorg.libxcb
       ];
     };
   };
@@ -239,6 +270,7 @@
       libjpeg
       libpng
       libreoffice
+      linuxConsoleTools
       llama-cpp
       lm_sensors
       ltrace
@@ -253,6 +285,11 @@
       pgadmin4-desktopmode
       qemu
       ripgrep
+      rtl-sdr
+      gqrx
+      sdrpp
+      gnuradio
+      sdrangel
       rsync
       sane-frontends
       sane-backends
