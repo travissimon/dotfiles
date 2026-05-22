@@ -263,6 +263,9 @@ If the file no longer exists on disk (deleted), message and decline."
       (if (review--line-file)
           (setq found t)
         (forward-line direction)))
+    ;; bobp may have fired before line 1 was tested; check the current line.
+    (when (and (not found) (review--line-file))
+      (setq found t))
     (if found
         (goto-char (+ (line-beginning-position) review--path-column))
       (goto-char start)
