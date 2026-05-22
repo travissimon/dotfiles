@@ -112,6 +112,11 @@ Signal `user-error' if none can be found.  Must be called inside a git repo."
 (defconst review--bit-unstaged 2)
 (defconst review--bit-committed 4)
 
+(defconst review--path-column 10
+  "Column at which the entry name begins on each entry line.
+Matches the 10-char prefix produced by `review--format-line':
+2 indent + 3 status chars + 2 separators + 3 trailing spaces.")
+
 (defun review--collect-files (root scope main-branch)
   "Collect all files under ROOT, scoped to SCOPE relative path or nil.
 MAIN-BRANCH is the branch name to compare HEAD against for committed state.
@@ -321,11 +326,6 @@ buffer to reflect the current scope.  Caller must `pop-to-buffer' afterwards
   (setq truncate-lines t))
 
 ;; --- Line-level helpers ---
-
-(defconst review--path-column 10
-  "Column at which the entry name begins on each entry line.
-Matches the 10-char prefix produced by `review--format-line':
-2 indent + 3 status chars + 2 separators + 3 trailing spaces.")
 
 (defun review--line-entry ()
   "Return the entry cons (KIND . RELPATH) at the path column of the current line,
