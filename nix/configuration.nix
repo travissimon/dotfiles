@@ -161,6 +161,11 @@
       wireplumber.enable = true;
     };
 
+    openssh = {
+      enable = true;
+      settings.PasswordAuthentication = true;
+    };
+
   };
 
   users.users = {
