@@ -264,10 +264,14 @@ ls -lh /home/tsimon/data/iso/
 ```
 Expected: a ~5–7 GB `Win11_*.iso` present.
 
-- [ ] **Step 2: Locate the virtio-win ISO (already installed via Nix)**
+- [ ] **Step 2: virtio-win ISO**
 
-Run: `ls -l $(nix eval --raw nixpkgs#virtio-win)/share/virtio-win/ 2>/dev/null || find /nix/store -maxdepth 4 -name 'virtio-win*.iso' 2>/dev/null | head -1`
-Expected: a `virtio-win*.iso` path. Note it — you will attach it as a second CD-ROM. (If easier, copy it next to the Windows ISO: `cp <that-path> /home/tsimon/data/iso/`.)
+NOTE (discovered during execution): the nixpkgs `virtio-win` package ships the
+**extracted driver tree** (plus `virtio-win-guest-tools.exe`/`.msi`), NOT an
+`.iso`. An ISO was therefore built from that tree with `xorrisofs` to
+`/home/tsimon/data/iso/virtio-win.iso` (volume label `virtio-win-0.1.285`). Use
+that path when attaching the second CD-ROM. To rebuild it if needed:
+`xorrisofs -o /home/tsimon/data/iso/virtio-win.iso -V virtio-win -J -joliet-long -r <virtio-win-store-path>/`
 
 - [ ] **Step 3: No commit** (downloads only; nothing tracked).
 
@@ -309,7 +313,10 @@ Choose "Select or create custom storage" → Manage → pool `win-images` → Ne
 
 - [ ] **Step 5: Install Windows, loading the virtio storage driver**
 
-In Setup, when no disk is shown: **Load driver** → browse the virtio-win CD → `amd64\w11\viostor.inf` (and, if prompted later, the NetKVM network driver from `NetKVM\w11\amd64`). The 250 GB disk appears; install onto it.
+In Setup, when no disk is shown: **Load driver** → browse the virtio-win CD →
+`viostor\w11\amd64` (the storage driver; layout is device\OS\arch). The 250 GB
+disk appears; install onto it. (If prompted for network later, the NetKVM driver
+is at `NetKVM\w11\amd64`.)
 
 - [ ] **Step 6: Enter the product key when prompted**
 
