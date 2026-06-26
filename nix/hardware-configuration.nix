@@ -43,7 +43,7 @@
     i2c.enable = true;
   };
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "amdgpu" "nvidia" ];
 
   fileSystems = {
     "/boot" = {
