@@ -68,6 +68,29 @@
 
       log() { echo "win11-gpu-hook: $*" >&2; }
 
+      # Bring the host back: reload nvidia, rebind PCI audio, restore the
+      # framebuffer console, and restart the desktop + compute. Used both by the
+      # normal VM-stop path and by every abort path in start_vm, so a failed
+      # start never leaves the host headless.
+      restore_desktop() {
+        modprobe nvidia nvidia_modeset nvidia_uvm nvidia_drm 2>/dev/null || true
+        echo 1 > /sys/bus/pci/rescan 2>/dev/null || true
+        for vtcon in /sys/class/vtconsole/vtcon*; do
+          [ -e "$vtcon/bind" ] && echo 1 > "$vtcon/bind" 2>/dev/null || true
+        done
+        systemctl start display-manager.service || true
+        systemctl start ollama.service 2>/dev/null || true
+      }
+
+      release_vfio() {
+        for d in ${gpu} ${aud}; do
+          echo "$d" > /sys/bus/pci/drivers/vfio-pci/unbind 2>/dev/null || true
+          echo "" > /sys/bus/pci/devices/$d/driver_override 2>/dev/null || true
+        done
+      }
+
+      driver_of() { basename "$(readlink -f /sys/bus/pci/devices/$1/driver 2>/dev/null)" 2>/dev/null; }
+
       start_vm() {
         # 1. stop GPU compute consumers
         systemctl stop ollama.service 2>/dev/null || true
@@ -93,48 +116,43 @@
           if modprobe -r nvidia_drm nvidia_modeset nvidia_uvm nvidia 2>/dev/null; then ok=1; break; fi
           sleep 1
         done
-        if [ "$ok" -ne 1 ] || lsmod | grep -q "^nvidia "; then
+        # abort if any nvidia module is still resident (base OR sub-module)
+        if [ "$ok" -ne 1 ] || lsmod | grep -qE '^nvidia'; then
           log "nvidia would not unload — aborting and restoring desktop"
-          modprobe nvidia nvidia_modeset nvidia_uvm nvidia_drm 2>/dev/null || true
-          systemctl start display-manager.service || true
-          systemctl start ollama.service 2>/dev/null || true
+          restore_desktop
           exit 1
         fi
 
         # 5. bind the GPU + its audio function to vfio-pci
-        modprobe vfio-pci
+        if ! modprobe vfio-pci; then
+          log "vfio-pci modprobe failed — aborting and restoring desktop"
+          restore_desktop
+          exit 1
+        fi
         for d in ${gpu} ${aud}; do
           echo "$d" > /sys/bus/pci/devices/$d/driver/unbind 2>/dev/null || true
-          echo vfio-pci > /sys/bus/pci/devices/$d/driver_override
+          echo vfio-pci > /sys/bus/pci/devices/$d/driver_override 2>/dev/null || true
           echo "$d" > /sys/bus/pci/drivers/vfio-pci/bind 2>/dev/null || true
         done
-      }
 
-      stop_vm() {
-        # 1. release the GPU from vfio-pci
+        # 6. VERIFY both functions are actually on vfio-pci. If not, libvirt would
+        #    otherwise start the VM with no GPU while the host sits headless — so
+        #    undo the partial bind and restore the desktop instead.
         for d in ${gpu} ${aud}; do
-          echo "$d" > /sys/bus/pci/drivers/vfio-pci/unbind 2>/dev/null || true
-          echo "" > /sys/bus/pci/devices/$d/driver_override 2>/dev/null || true
+          if [ "$(driver_of "$d")" != "vfio-pci" ]; then
+            log "device $d failed to bind vfio-pci (driver='$(driver_of "$d")') — aborting"
+            release_vfio
+            restore_desktop
+            exit 1
+          fi
         done
-
-        # 2. reload nvidia (binds the GPU) and rescan so the audio fn rebinds
-        modprobe nvidia nvidia_modeset nvidia_uvm nvidia_drm 2>/dev/null || true
-        echo 1 > /sys/bus/pci/rescan 2>/dev/null || true
-
-        # 3. rebind the framebuffer console
-        for vtcon in /sys/class/vtconsole/vtcon*; do
-          [ -e "$vtcon/bind" ] && echo 1 > "$vtcon/bind" 2>/dev/null || true
-        done
-
-        # 4. bring the desktop + compute back (fresh login)
-        systemctl start display-manager.service || true
-        systemctl start ollama.service 2>/dev/null || true
       }
 
       if [ "$OP" = "prepare" ] && [ "$SUBOP" = "begin" ]; then
         start_vm
       elif [ "$OP" = "release" ] && [ "$SUBOP" = "end" ]; then
-        stop_vm
+        release_vfio
+        restore_desktop
       fi
     '';
 }
