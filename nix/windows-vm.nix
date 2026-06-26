@@ -26,7 +26,6 @@
   environment.sessionVariables.LIBVIRT_DEFAULT_URI = "qemu:///system";
 
   environment.systemPackages = with pkgs; [
-    looking-glass-client
     virtiofsd
     virtio-win
     swtpm
