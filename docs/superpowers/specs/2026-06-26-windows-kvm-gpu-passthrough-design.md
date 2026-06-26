@@ -2,9 +2,53 @@
 
 **Date:** 2026-06-26
 **Host:** `moggio` (NixOS, flake-based config in `nix/`)
-**Goal:** Run a Windows 11 virtual machine under KVM/libvirt for Arma Reforger /
-Enfusion Workbench development, with the NVIDIA RTX 5090 passed through for real
-GPU performance, while keeping the Linux host usable on the AMD integrated GPU.
+**Goal:** Run a Windows 11 virtual machine under KVM/libvirt for occasional Arma
+Reforger / Enfusion Workbench development, with the NVIDIA RTX 5090 passed
+through for real GPU performance.
+
+---
+
+## ⚠️ REVISION 2026-06-27 — Single-GPU passthrough (supersedes the dual-GPU / Looking Glass design below)
+
+After learning the actual usage pattern — **the Linux desktop is used almost all
+the time; the VM rarely** — we switched from dual-GPU passthrough (host on the
+iGPU + Looking Glass) to **single-GPU passthrough**. This section is authoritative
+where it conflicts with anything below it.
+
+**New architecture:**
+- **The Linux host runs natively on the RTX 5090** (nvidia driver), driving the
+  monitor directly. No iGPU display, **no monitor-cable move, no BIOS change.**
+  Native Linux 3D (e.g. Arma via Proton) runs on the 5090 at full performance —
+  the main reason for the switch.
+- **Starting the VM tears the Linux desktop down**, hands the 5090 to Windows,
+  and the **VM drives the same monitor directly** through the 5090. Shutting the
+  VM down restores the Linux desktop as a **fresh login** (the prior session and
+  its open apps are gone). This is the accepted trade-off, fine for rare VM use.
+- **No Looking Glass / ivshmem** (there is no host desktop to display it on while
+  the VM runs). `looking-glass-client` is removed from the config.
+- **The 5090 GPU is shared over time** by a libvirt qemu hook:
+  - *prepare/begin:* stop `ollama`; stop `display-manager` (GDM/Hyprland); free
+    the framebuffer console (unbind `vtconsole*`, `efi-framebuffer` if present);
+    unload `nvidia_drm nvidia_modeset nvidia_uvm nvidia`; bind `vfio-pci`.
+  - *release/end:* unbind `vfio-pci`; reload nvidia; rebind the console;
+    `systemctl start display-manager`; start `ollama`.
+- **Operational constraint:** because the prepare hook stops the display manager,
+  it kills the shell/session that launched the VM. The VM must therefore be
+  started **detached from the GUI session** — from SSH, a TTY, or via
+  `systemd-run --scope`/a small service. A wrapper for this will be provided.
+- **SSH recovery is essential** (already in place): if the VM fails to start or
+  the desktop fails to restore, SSH in and run the release steps by hand
+  (`modprobe nvidia ...; systemctl start display-manager`).
+
+**Superseded below:** Decisions 2–4 (host-on-iGPU, dynamic-while-host-stays-up,
+Looking Glass); §4.2 (display flip — now N/A, host stays on the 5090); §4.4 (old
+hook — replaced by the teardown/restore hook above); §4.7 (Looking Glass — removed);
+and the Looking Glass / ivshmem parts of §5.
+
+**Still in force from below:** IOMMU/VFIO enablement (§4.1), libvirtd + OVMF +
+swtpm + groups (§4.3), `nofail` + storage pool on `/home/tsimon/data` (§4.5),
+virtiofs shared folder (§4.6), Windows 11 Home (§2.6), and the VM sizing in §5
+(minus Looking Glass).
 
 ---
 

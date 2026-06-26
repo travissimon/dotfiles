@@ -6,7 +6,37 @@
 
 **Architecture:** Declarative host (libvirt + VFIO + dynamic GPU-swap hooks + Looking Glass + virtiofs, all in the Nix flake) plus an imperatively-created/installed guest. The 5090 (PCI `0000:01:00.0`/`.1`, IOMMU group 13, isolated) is dynamically rebound between `nvidia` (host CUDA) and `vfio-pci` (VM) by libvirt qemu hooks. Host display moves to the AMD iGPU (`0000:74:00.0`); Windows is viewed via Looking Glass.
 
-**Tech Stack:** NixOS (nixpkgs unstable), libvirtd/QEMU/KVM, OVMF (UEFI+SecureBoot), swtpm (TPM 2.0), vfio-pci, virtiofsd, looking-glass-client, virtio-win.
+**Tech Stack:** NixOS (nixpkgs unstable), libvirtd/QEMU/KVM, OVMF (UEFI+SecureBoot), swtpm (TPM 2.0), vfio-pci, virtiofsd, virtio-win.
+
+> ## ⚠️ REVISION 2026-06-27 — Single-GPU passthrough (overrides Tasks 5–10 below)
+>
+> Switched from dual-GPU + Looking Glass to **single-GPU passthrough** (host runs
+> natively on the 5090; the VM is rare). See the spec's REVISION section. The task
+> changes:
+>
+> - **Task 5 → REVERSED.** Do NOT flip the host to the iGPU. Revert the iGPU edits
+>   (`git revert 8292d96`): host stays on the 5090 (`videoDrivers=["nvidia"]`,
+>   `nvidia-drm.fbdev=1`, no `AQ_DRM_DEVICES`). No monitor-cable move, no BIOS change.
+> - **Drop `looking-glass-client`** from `windows-vm.nix`. No ivshmem, no
+>   `/dev/shm/looking-glass` (Task 9), no Looking Glass guest/client (Task 10).
+> - **Task 7 → single-GPU teardown/restore hook** (replaces the dynamic-swap hook).
+>   prepare/begin: `systemctl stop ollama`; `systemctl stop display-manager`;
+>   free the framebuffer console (unbind `/sys/class/vtconsole/vtcon*/bind`,
+>   `efi-framebuffer.0` if present); `modprobe -r nvidia_drm nvidia_modeset
+>   nvidia_uvm nvidia`; bind `vfio-pci`. release/end: unbind vfio; `modprobe
+>   nvidia nvidia_modeset nvidia_uvm nvidia_drm`; rebind console; `systemctl start
+>   display-manager`; `systemctl start ollama`.
+> - **Task 6 → single-GPU teardown test, run from SSH** (the desktop dies during
+>   the test).
+> - **Task 8** unchanged (attach the 5090, `managed='no'`), except set the emulated
+>   video to `none` (or keep QXL only as a pre-driver fallback) so Windows uses the
+>   5090 as primary; the VM drives the physical monitor directly.
+> - **VM must be started detached** from the GUI session (SSH/TTY or
+>   `systemd-run --scope`), because the prepare hook stops the display manager and
+>   would kill the launching shell. A wrapper script will be provided.
+> - **SSH recovery is mandatory** — already in place (`tsimon@10.17.13.205`).
+>
+> Tasks 0–4 (infra, media, VM install) and Task 11 (virtiofs) are unaffected.
 
 ## Global Constraints
 
