@@ -30,6 +30,7 @@
       colorz
       cowsay
       code-cursor-fhs
+      dbeaver-bin
       dconf
       easyeffects
       expressvpn
@@ -58,7 +59,7 @@
       postman
       slurp
       shotcut
-      swww
+      awww
       typescript
       typescript-language-server
       wallust

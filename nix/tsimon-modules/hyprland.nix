@@ -25,7 +25,7 @@
                 hl.exec_cmd("waybar")
                 hl.exec_cmd("hypridle")
                 hl.exec_cmd("hyprlock")
-                hl.exec_cmd("swww init")
+                hl.exec_cmd("awww-daemon")
                 hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
                 hl.exec_cmd("dbus-update-activation-environment --systemd --all")
               end
@@ -61,8 +61,8 @@
           decoration = {
             rounding = 10;
             rounding_power = 2;
-            active_opacity = 0.96;
-            inactive_opacity = 0.85;
+            active_opacity = 0.99;
+            inactive_opacity = 0.5;
 
             shadow = {
               enabled = true;
@@ -106,7 +106,7 @@
         hl.bind(mod .. " + ALT + mouse:272", hl.dsp.window.resize(), { mouse = true })
 
         -- Application launchers / window actions
-        hl.bind(mod .. " + ENTER", hl.dsp.exec_cmd(terminal))
+        hl.bind(mod .. " + Return", hl.dsp.exec_cmd(terminal))
         hl.bind(mod .. " + C", hl.dsp.window.close())
         hl.bind(mod .. " + M", hl.dsp.exit())
         hl.bind(mod .. " + E", hl.dsp.exec_cmd(fileManager))

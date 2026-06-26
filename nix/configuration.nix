@@ -277,12 +277,14 @@
       lsof
       naps2
       ncurses
+      ngrep
       nmap
       netcat
       nix-output-monitor
       openrgb-with-all-plugins
       pciutils
       pgadmin4-desktopmode
+      procps
       qemu
       ripgrep
       rtl-sdr
@@ -297,6 +299,7 @@
       stow
       strace
       sysstat
+      tcpdump
       time
       tree
       usbutils
