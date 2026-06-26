@@ -60,6 +60,7 @@
     "/home/tsimon/data" = {
       device = "/dev/disk/by-uuid/a721cc76-4c65-438a-9a52-56188839c59b";
       fsType = "ext4";
+      options = [ "nofail" "x-systemd.device-timeout=10s" ];
     };
   };
 
