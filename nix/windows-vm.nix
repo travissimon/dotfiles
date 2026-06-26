@@ -19,6 +19,12 @@
 
   programs.virt-manager.enable = true;
 
+  # Default virsh (and other libvirt clients) to the system daemon. Without
+  # this, virsh defaults to qemu:///session, which runs as the user and cannot
+  # manage the root-owned storage pool or do GPU passthrough. virt-manager
+  # already targets the system daemon; this keeps the CLI consistent with it.
+  environment.sessionVariables.LIBVIRT_DEFAULT_URI = "qemu:///system";
+
   environment.systemPackages = with pkgs; [
     looking-glass-client
     virtiofsd
