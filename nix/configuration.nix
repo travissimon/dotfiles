@@ -7,6 +7,7 @@
 
   imports = [
     ./hardware-configuration.nix
+    ./windows-vm.nix
   ];
 
   boot = {
@@ -14,7 +15,7 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    kernelParams = [ "nvidia-drm.fbdev=1" ];
+    kernelParams = [ "nvidia-drm.fbdev=1" "amd_iommu=on" "iommu=pt" ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernelModules = [ "i2c-dev" "i2c-piix4" "v4l2loopback" "snd-aloop" ];
     extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
@@ -172,7 +173,7 @@
     tsimon = {
       isNormalUser = true;
       description = "Travis Simon";
-      extraGroups = [ "wheel" "audio" "scanner" "lp" "docker" "plugdev" ];
+      extraGroups = [ "wheel" "audio" "scanner" "lp" "docker" "plugdev" "libvirtd" "kvm" ];
     };
   };
 
