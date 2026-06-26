@@ -23,6 +23,7 @@ Established by probing the live system:
 | Root SSD | `/` ext4, only ~304 GB free (83% used) | VM disk must NOT go here |
 | Existing virt | `qemu`, `virt-manager` in `systemPackages`; **libvirtd NOT enabled**; user not in `libvirtd`/`kvm` | Net-new libvirt enablement required |
 | Current display | `services.xserver.videoDrivers = ["nvidia"]`; nvidia modules in initrd | Host currently drives display via the 5090 — must flip to iGPU |
+| Monitor | Single panel, EDID = Samsung **Odyssey G93SD** (49" 5120×1440 240Hz QD-OLED). Plugged into the **5090 via HDMI**, currently underdriven at `3840×1080@120` | Move to a **motherboard DisplayPort** output for native 5120×1440 on the iGPU |
 
 **Supplied by user:**
 - Windows license keys (located by the user; **values kept out of this repo and
@@ -45,8 +46,12 @@ Established by probing the live system:
 3. **GPU sharing:** **Dynamic** — 5090 normally bound to `nvidia` for host CUDA
    (`ollama`, `llama-cpp`, `btop-cuda`); libvirt hooks swap it to `vfio-pci` for the
    VM and back on shutdown.
-4. **VM display:** **Looking Glass** (windowed, low-latency on the Linux desktop),
-   with a virtual/dummy display so the 5090 renders a capturable desktop.
+4. **VM display:** **Looking Glass only** (windowed, low-latency on the Linux
+   desktop), with a virtual/dummy display so the 5090 renders a capturable desktop.
+   Single monitor; the 5090 is **not** wired to the panel, so Looking Glass is the
+   sole way to see Windows — the virtual display is therefore mandatory, not
+   optional. Windows view is capped at the iGPU host's resolution/refresh
+   (acceptable for development).
 5. **Storage:** VM disk image **and** a shared folder both live on
    `/home/tsimon/data`.
 6. **Windows version:** **Windows 11 Home** (UEFI + Secure Boot + TPM 2.0),
@@ -95,7 +100,10 @@ All changes land in the existing `nix/` flake. Grouping for clarity:
   the iGPU too).
 - Keep `nvidia` available for compute; the host must not depend on the 5090 for
   display output.
-- **Physical step:** move at least one monitor cable to the motherboard video output.
+- **Physical step:** move the monitor cable from the 5090 (HDMI) to a
+  **motherboard DisplayPort** output (DP-4/5/6) — DP is needed for native
+  5120×1440 on the iGPU. The 5090 keeps no display cable; Windows is seen only
+  through Looking Glass.
 - **Safety:** retain a known-good fallback generation and ensure SSH access so a
   failed display flip is recoverable without a screen.
 
@@ -158,7 +166,9 @@ Declared via `virtualisation.libvirtd.hooks.qemu.<name>`. On the Windows domain:
 
 ## 6. Manual / imperative steps (one-time)
 
-1. Obtain a **Windows 11 ISO** (official Microsoft download); place on the data drive.
+1. Obtain a **Windows 11 ISO** — the implementation plan will include the official
+   Microsoft download steps (microsoft.com/software-download/windows11, "Download
+   Windows 11 Disk Image (ISO)"); place it on the data drive.
 2. Make the **virtio-win** ISO available (via the Nix package).
 3. Locate or purchase the **license key** (optional for install; activate later).
 4. In virt-manager: create the VM with the firmware/TPM/specs above; attach both
