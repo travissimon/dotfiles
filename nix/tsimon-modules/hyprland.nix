@@ -82,6 +82,10 @@
 
           cursor = {
             no_hardware_cursors = true;
+            # NVIDIA (RTX 5090 drives the display): composite the cursor on the
+            # CPU into the framebuffer to avoid the stale "ghost" cursor left by
+            # NVIDIA's DRM cursor buffer handling under wlroots/Hyprland.
+            use_cpu_buffer = true;
           };
         };
 

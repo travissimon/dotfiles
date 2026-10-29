@@ -99,7 +99,6 @@
         epkgs.helm-projectile
         epkgs.htmlize
         epkgs.js2-mode
-        epkgs.less-css-mode
         epkgs.lsp-mode
         epkgs.magit
         epkgs.nix-mode

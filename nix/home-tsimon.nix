@@ -39,6 +39,7 @@
       fortune
       fuzzel
       fzf
+      glab
       gvfs
       grim
       grimblast
@@ -62,6 +63,7 @@
       awww
       typescript
       typescript-language-server
+      vscode
       wallust
       waypaper
       wakatime-cli

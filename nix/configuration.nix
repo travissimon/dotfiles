@@ -124,10 +124,10 @@
       enable = true;
       nssmdns4 = true;
       openFirewall = true;
-      publish = {
-        enable = true;
-        addresses = true;
-        userServices = true;
+      settings.publish = {
+        disable-publishing = false;
+        disable-user-service-publishing = false;
+        publish-addresses = true;
       };
     };
 
@@ -150,7 +150,9 @@
     };
 
     open-webui = {
-      enable = true;
+      # Disabled: python3Packages.posthog is marked broken with mcp >= 2 in nixpkgs.
+      # Re-enable once that's fixed upstream.
+      enable = false;
       port = 8888;
     };
 
@@ -173,7 +175,7 @@
     tsimon = {
       isNormalUser = true;
       description = "Travis Simon";
-      extraGroups = [ "wheel" "audio" "scanner" "lp" "docker" "plugdev" "libvirtd" "kvm" ];
+      extraGroups = [ "wheel" "audio" "scanner" "lp" "docker" "plugdev" "libvirtd" "kvm" "dialout" ];
     };
   };
 
@@ -221,13 +223,13 @@
         udev
         vulkan-loader
         wayland
-        xorg.libX11
-        xorg.libXcomposite
-        xorg.libXdamage
-        xorg.libXext
-        xorg.libXfixes
-        xorg.libXrandr
-        xorg.libxcb
+        libx11
+        libxcomposite
+        libxdamage
+        libxext
+        libxfixes
+        libxrandr
+        libxcb
       ];
     };
   };
@@ -237,7 +239,6 @@
       alacritty
       aspell
       aspellDicts.en
-      aspellDicts.en-computers
       bc
       btop-cuda
       brotli

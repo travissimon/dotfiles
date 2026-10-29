@@ -7,7 +7,8 @@
 
 ;; Set default font
 (set-face-attribute 'default nil
-  :family "Operator Mono SSm"
-  :height 100
-  :weight 'normal
+  ;; :family "Operator Mono SSm"   ; not installed on this system
+  :family "RobotoMono Nerd Font"
+  :height 110
+  :weight 'medium
   :width 'normal)

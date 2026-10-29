@@ -52,7 +52,7 @@
 (use-package projectile)
 (use-package helm-projectile)
 
-(projectile-global-mode)
+(projectile-mode +1)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
 (setq projectile-enable-caching t)
